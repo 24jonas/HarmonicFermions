@@ -212,7 +212,7 @@ function run_and_plot()
                 Float64((b * log_Z_prime))
             end
 
-            w = BigFloat(3/2)
+            w = BigFloat(1/2)
             cache2 = Dict()
             cache3 = Dict()
 
@@ -265,9 +265,9 @@ function run_and_plot()
             end
 
             if mode == "thermo"
-                energy_c = (1.0 / sqrt(1 + (epsilon^2) /4))*(-energy1+energy_n2c) + (w / sqrt(1 + (w^2) * (epsilon^2) / 4))*(energy1star)
+                energy_c = (1.0 / sqrt(1 + (epsilon^2) /4))*(energy1*0+energy_n2c) + (w / sqrt(1 + (w^2) * (epsilon^2) / 4))*(energy1star)
             else
-                energy_c = 0.5*(sqrt(1+(epsilon^2)/4) + 1.0 / sqrt(1 + (epsilon^2) /4))*(-energy1+energy_n2c) + (w*0.5)* (sqrt(1 + (epsilon^2)*(w^2)/4)+ 1.0 / sqrt(1 + (w^2) * (epsilon^2) / 4))*(energy1star)
+                energy_c = 0.5*(sqrt(1+(epsilon^2)/4) + 1.0 / sqrt(1 + (epsilon^2) /4))*(energy1*0+energy_n2c) + (w*0.5)* (sqrt(1 + (epsilon^2)*(w^2)/4)+ 1.0 / sqrt(1 + (w^2) * (epsilon^2) / 4))*(energy1star)
             end
 
             # if mode == "thermo"

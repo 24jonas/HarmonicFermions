@@ -6,13 +6,15 @@
     "propagator_choice": "PA",
     "bead_counts": [
         12,
+        18,
         27,
+        40,
         200
     ],
     "num_fermions": 6,
     "tau_range": {
-        "length": 20.0,
-        "stop": 20.25,
-        "start": 0.25
+        "length": 25.0,
+        "stop": 30.25,
+        "start": 5.25
     }
 }
