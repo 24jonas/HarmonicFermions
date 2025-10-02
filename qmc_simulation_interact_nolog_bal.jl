@@ -198,6 +198,20 @@ function run_and_plot()
                 Float64((b * log_Z_prime))
             end
 
+            cache0 = Dict{Int, Tuple{BigFloat, BigFloat}}()
+
+            Z_val, Z_prime = Z_and_derivative_recursive!(
+                ceil(Int,num_fermions/2), dimensions, b, cache0
+            )
+
+            energy_n2c = if isnan(Z_prime) || Z_val <= 0 # Avoid division by zero or log of negative
+                NaN
+            else
+                log_Z_prime = Z_prime / Z_val # This is the log derivative
+                # The rest of the formula is the same
+                Float64((b * log_Z_prime))
+            end
+
             w = BigFloat(3/2)
             cache2 = Dict()
             cache3 = Dict()
@@ -251,18 +265,18 @@ function run_and_plot()
             end
 
             if mode == "thermo"
-                energy_c = (1.0 / sqrt(1 + (epsilon^2) /4))*energy1 + (w / sqrt(1 + (w^2) * (epsilon^2) / 4))*(energystar_c - energy1star)
+                energy_c = (1.0 / sqrt(1 + (epsilon^2) /4))*(-energy1+energy_n2c) + (w / sqrt(1 + (w^2) * (epsilon^2) / 4))*(energy1star)
             else
-                energy_c = 0.5*(sqrt(1+(epsilon^2)/4) + 1.0 / sqrt(1 + (epsilon^2) /4))*energy1 + (w*0.5)* (sqrt(1 + (epsilon^2)*(w^2)/4)+ 1.0 / sqrt(1 + (w^2) * (epsilon^2) / 4))*(energystar_c - energy1star)
+                energy_c = 0.5*(sqrt(1+(epsilon^2)/4) + 1.0 / sqrt(1 + (epsilon^2) /4))*(-energy1+energy_n2c) + (w*0.5)* (sqrt(1 + (epsilon^2)*(w^2)/4)+ 1.0 / sqrt(1 + (w^2) * (epsilon^2) / 4))*(energy1star)
             end
 
-            if mode == "thermo"
-                energy_f = (1.0 / sqrt(1 + (epsilon^2) /4))*energy1 + (w / sqrt(1 + (w^2) * (epsilon^2) / 4))*(energystar_f - energy1star)
-            else
-                energy_f = 0.5*(sqrt(1+(epsilon^2)/4) + 1.0 / sqrt(1 + (epsilon^2) /4))*energy1 + (w*0.5)* (sqrt(1 + (epsilon^2)*(w^2)/4)+ 1.0 / sqrt(1 + (w^2) * (epsilon^2) / 4))*(energystar_f - energy1star)
-            end
+            # if mode == "thermo"
+            #     energy_f = (1.0 / sqrt(1 + (epsilon^2) /4))*energy1 + (w / sqrt(1 + (w^2) * (epsilon^2) / 4))*(energystar_f - energy1star)
+            # else
+            #     energy_f = 0.5*(sqrt(1+(epsilon^2)/4) + 1.0 / sqrt(1 + (epsilon^2) /4))*energy1 + (w*0.5)* (sqrt(1 + (epsilon^2)*(w^2)/4)+ 1.0 / sqrt(1 + (w^2) * (epsilon^2) / 4))*(energystar_f - energy1star)
+            # end
             
-            energies[i] = energy_c + energy_f
+            energies[i] = energy_c
         end
 
         results_df[!, "N_$(N)"] = energies
