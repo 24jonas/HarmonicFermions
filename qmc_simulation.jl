@@ -85,8 +85,8 @@ function run_and_plot()
 
             # --- Effective case ---
             zeta_1_s = p_funcs.zeta_1(w*epsilon)
-            lambda_val_s = p_funcs.lambda(epsilon)
-            gamma_val_s = p_funcs.gamma(epsilon)
+            lambda_val_s = p_funcs.lambda(epsilon) #not correct
+            gamma_val_s = p_funcs.gamma(epsilon) #not correct
             u_s = (zeta_1_s >= 1) ? acosh(zeta_1_s) : BigFloat(0)
             b_s = exp(-N * u_s) #exp(-tau) #exp(-N * u_s)
             
@@ -106,10 +106,10 @@ function run_and_plot()
 
 
             if mode == "thermo"
-                factor_regular = (lambda_val / gamma_val) #(1.0 / sqrt(1 + (epsilon^2) /4)) #PA
+                factor_regular = (lambda_val / gamma_val) 
                 factor_star = (w / sqrt(1 + (w^2) * (epsilon^2) / 4)) #PA
             else
-                factor_regular = (gamma_val^2 + 1 )/(2*lambda_val)*(lambda_val / gamma_val) #0.5*(sqrt(1+(epsilon^2)/4) + 1.0 / sqrt(1 + (epsilon^2) /4)) #PA
+                factor_regular = (gamma_val^2 + 1 )/(2*lambda_val)*(lambda_val / gamma_val) 
                 factor_star = (w*0.5)* (sqrt(1 + (epsilon^2)*(w^2)/4)+ 1.0 / sqrt(1 + (w^2) * (epsilon^2) / 4)) #PA
             end
 

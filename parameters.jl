@@ -9,7 +9,7 @@ tau_values = range(tau_start, tau_stop, length=100)
 
 # --- High-Precision Settings ---
 # Set precision for BigFloat (in bits). 50 decimal digits ≈ 167 bits.
-bigfloat_precision =  6000 #4096
+bigfloat_precision = 6000 #4096
 
 #Propagator choice: PA, TI, 4A is written as FA
 propagator_choice = Symbol("PA")
