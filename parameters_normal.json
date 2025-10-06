@@ -6,9 +6,7 @@
     "propagator_choice": "PA",
     "bead_counts": [
         12,
-        18,
         27,
-        40,
         200
     ],
     "num_fermions": 6,

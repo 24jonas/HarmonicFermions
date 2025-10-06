@@ -215,6 +215,7 @@ function run_and_plot()
             w = BigFloat(1/2)
             cache2 = Dict()
             cache3 = Dict()
+            cache4 = Dict()
 
             # --- The calculation logic remains identical ---
             epsilon = BigFloat(tau) / BigFloat(N)
@@ -238,7 +239,6 @@ function run_and_plot()
             Z_val_c, Z_prime_c = Z_and_derivative_recursive!(
                 ceil(Int,num_fermions/2), dimensions, b, cache3
             )
-
 
             energy1star = if isnan(Z1_prime) || Z1_val <= 0 # Avoid division by zero or log of negative
                 NaN
@@ -264,10 +264,19 @@ function run_and_plot()
                 Float64((b * log_Z_prime))
             end
 
+
+
+
+
+
+
+
             if mode == "thermo"
-                energy_c = (1.0 / sqrt(1 + (epsilon^2) /4))*(energy1*0+energy_n2c) + (w / sqrt(1 + (w^2) * (epsilon^2) / 4))*(energy1star)
+                #energy_c = (1.0 / sqrt(1 + (epsilon^2) /4))*(energy1*0+energy_n2c) + (w / sqrt(1 + (w^2) * (epsilon^2) / 4))*(energy1star)
+                energy_c = (1.0 / sqrt(1 + (epsilon^2) /4))*(energy1) + (w / sqrt(1 + (w^2) * (epsilon^2) / 4))*(2*energystar_c -energy1star)
             else
-                energy_c = 0.5*(sqrt(1+(epsilon^2)/4) + 1.0 / sqrt(1 + (epsilon^2) /4))*(energy1*0+energy_n2c) + (w*0.5)* (sqrt(1 + (epsilon^2)*(w^2)/4)+ 1.0 / sqrt(1 + (w^2) * (epsilon^2) / 4))*(energy1star)
+                #energy_c = 0.5*(sqrt(1+(epsilon^2)/4) + 1.0 / sqrt(1 + (epsilon^2) /4))*(energy1*0+energy_n2c) + (w*0.5)* (sqrt(1 + (epsilon^2)*(w^2)/4)+ 1.0 / sqrt(1 + (w^2) * (epsilon^2) / 4))*(energy1star)
+                energy_c = 0.5*(sqrt(1+(epsilon^2)/4) + 1.0 / sqrt(1 + (epsilon^2) /4))*(energy1) + (w*0.5)* (sqrt(1 + (epsilon^2)*(w^2)/4)+ 1.0 / sqrt(1 + (w^2) * (epsilon^2) / 4))*(2*energystar_c -energy1star)
             end
 
             # if mode == "thermo"

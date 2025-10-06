@@ -1,7 +1,7 @@
 # --- Simulation Parameters ---
 num_fermions = 6
 dimensions = 2
-bead_counts = [12, 18, 27, 40, 200]
+bead_counts = [12, 27, 200]
 
 tau_start = 5.25
 tau_stop = 30.25
