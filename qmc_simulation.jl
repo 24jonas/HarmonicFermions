@@ -79,14 +79,14 @@ function run_and_plot()
             epsilon = BigFloat(tau) / BigFloat(N)
             zeta_1 = p_funcs.zeta_1(epsilon)
             lambda_val = p_funcs.lambda(epsilon)
-            gamma_val = p_funcs.gamma(epsilon)
+            gamma_val = (sqrt(zeta_1^2-1))/p_funcs.k1(epsilon) #p_funcs.gamma(epsilon) #goes to 1 for exact
             u = (zeta_1 >= 1) ? acosh(zeta_1) : BigFloat(0)
-            b = exp(-N * u) #exp(-tau) #exp(-N * u)
+            b = exp(-N * u) #exp(-tau) for exact
 
             # --- Effective case ---
             zeta_1_s = p_funcs.zeta_1(w*epsilon)
             lambda_val_s = p_funcs.lambda(epsilon) #not correct
-            gamma_val_s = p_funcs.gamma(epsilon) #not correct
+            gamma_val_s = (sqrt(zeta_1_s^2-1))/p_funcs.k1(epsilon)
             u_s = (zeta_1_s >= 1) ? acosh(zeta_1_s) : BigFloat(0)
             b_s = exp(-N * u_s) #exp(-tau) #exp(-N * u_s)
             
@@ -109,8 +109,8 @@ function run_and_plot()
                 factor_regular = (lambda_val / gamma_val) 
                 factor_star = (w / sqrt(1 + (w^2) * (epsilon^2) / 4)) #PA
             else
-                factor_regular = (gamma_val^2 + 1 )/(2*lambda_val)*(lambda_val / gamma_val) 
-                factor_star = (w*0.5)* (sqrt(1 + (epsilon^2)*(w^2)/4)+ 1.0 / sqrt(1 + (w^2) * (epsilon^2) / 4)) #PA
+                factor_regular = 0.5*(gamma_val + 1/gamma_val)
+                factor_star = (w/2)*(gamma_val_s/w + w/gamma_val_s)
             end
 
             #cache0 = Dict{Int, Tuple{BigFloat, BigFloat}}()

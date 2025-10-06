@@ -12,7 +12,8 @@ const propagators = (
     PA = (
         zeta_1 = e -> 1 + e^2/2,
         lambda = e -> BigFloat(1.0),
-        gamma = e -> sqrt(1 + e^2/4)
+        gamma = e -> sqrt(1 + e^2/4),
+        k1 = e -> e
     ),
     TI = (
         zeta_1 = e -> begin

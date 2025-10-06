@@ -1,5 +1,5 @@
 # --- Simulation Parameters ---
-num_fermions = 6
+num_fermions = 12
 dimensions = 2
 bead_counts = [12, 27, 200]
 
@@ -14,7 +14,7 @@ bigfloat_precision = 6000 #4096
 #Propagator choice: PA, TI, 4A is written as FA
 propagator_choice = Symbol("PA")
 
-mode = "ham" # thermo, ham
+mode = "thermo" # thermo, ham
 
 w = BigFloat(1/2) #For no interaction, set w=1
 balanced = true
@@ -22,5 +22,5 @@ balanced = true
 run_id = "normal"
 
 #Preview plot
-toplim = 31
-bottomlim = 5
+toplim = 18
+bottomlim = 12
