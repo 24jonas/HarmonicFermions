@@ -1,5 +1,5 @@
 {
-    "bigfloat_precision": 2000,
+    "bigfloat_precision": 6000,
     "run_id": "normal",
     "mode": "ham",
     "dimensions": 2,
@@ -11,8 +11,7 @@
     ],
     "num_fermions": 6,
     "tau_range": {
-        "length": 25.0,
-        "stop": 30.25,
+        "stop": 25.25,
         "start": 5.25
     }
 }
