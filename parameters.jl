@@ -1,26 +1,26 @@
 # --- Simulation Parameters ---
-num_fermions = 12
+num_fermions = 196
 dimensions = 2
-bead_counts = [12, 27, 200]
+bead_counts = [32, 200]
 
 tau_start = 5.25
-tau_stop = 25.25
+tau_stop = 15.25
 tau_values = range(tau_start, tau_stop, length=100)
 
 # --- High-Precision Settings ---
 # Set precision for BigFloat (in bits). 50 decimal digits ≈ 167 bits.
-bigfloat_precision = 6000 #4096
+bigfloat_precision = 28000
 
 #Propagator choice: PA, TI, 4A is written as FA
 propagator_choice = Symbol("PA")
 
-mode = "thermo" # thermo, ham
+mode = "ham" # thermo, ham
 
 w = BigFloat(1/2) #For no interaction, set w=1
-balanced = true
+balanced = false
 
 run_id = "normal"
 
 #Preview plot
-toplim = 18
-bottomlim = 12
+toplim = 2100
+bottomlim = 1800
