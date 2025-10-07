@@ -39,7 +39,9 @@ function run_and_plot()
             "start" => tau_start,
             "stop" => tau_stop
         ),
-        "bigfloat_precision" => bigfloat_precision
+        "bigfloat_precision" => bigfloat_precision,
+        "balanced" => balanced,
+        "interaction w" => w
     )
 
     param_filename = "parameters_$(run_id).json"
