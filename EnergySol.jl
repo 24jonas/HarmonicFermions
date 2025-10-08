@@ -1,7 +1,7 @@
 module EnergySol
 
 # Make the main recursive function available for import.
-export harmEnergy
+export harmEnergy, get_factor, get_energy_calc
 
 
 function z_and_derivative_high_precision(i::Int, d::Int, b::BigFloat)
@@ -80,6 +80,41 @@ function harmEnergy(num_fermions::Int, dimensions::Int, b::BigFloat, cache::Dict
 
     return energy
 
+end
+
+
+
+function get_factor(mode::String)
+    if mode == "thermo"
+        # Return a new function specifically for the "thermo" calculation
+        return (lambda, gamma, w, lambda_s, gamma_s) -> begin
+            factor_regular = lambda / gamma
+            factor_star = (w^2) * lambda_s / gamma_s
+            return factor_regular, factor_star
+        end
+    else
+        # Return a new function for the default calculation
+        return (lambda, gamma, w, lambda_s, gamma_s) -> begin
+            factor_regular = 0.5 * (gamma + 1 / gamma)
+            factor_star = (w / 2) * (gamma_s / w + w / gamma_s)
+            return factor_regular, factor_star
+        end
+    end
+end
+
+
+
+function get_energy_calc(balanced::Bool)
+    if balanced
+        # Return a function for the balanced calculation
+        return (num_fermions, dimensions, b_s, cache2) -> 
+            harmEnergy(floor(Int, num_fermions / 2), dimensions, b_s, cache2) + harmEnergy(ceil(Int, num_fermions / 2), dimensions, b_s, cache2)
+    else
+        # Return a function for the unbalanced calculation.
+        # It still accepts cache2 for a consistent function signature, even if unused.
+        return (num_fermions, dimensions, b_s, cache2) -> 
+            harmEnergy(num_fermions, dimensions, b_s, cache2)
+    end
 end
 
 

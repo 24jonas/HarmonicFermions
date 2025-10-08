@@ -67,6 +67,9 @@ function run_and_plot()
 
     results_df = DataFrame(tau = collect(tau_values))
 
+    factor_calc = get_factor(mode)
+    energy_calc = get_energy_calc(balanced)
+
     # --- Main Loop ---
     for N in bead_counts
         # CHANGE 1: Pre-allocate the results array. `undef` is fine since we'll fill every spot.
@@ -80,7 +83,6 @@ function run_and_plot()
             # --- The calculation logic remains identical ---
             epsilon = BigFloat(tau) / BigFloat(N)
             zeta_1 = p_funcs.zeta_1(epsilon)
-            d_zeta_1 = p_funcs.d_zeta_1(epsilon)
             lambda_val = p_funcs.lambda(epsilon)
             gamma_val = p_funcs.gamma(epsilon) #p_funcs.gamma(epsilon) #goes to 1 for exact
             u = (zeta_1 >= 1) ? acosh(zeta_1) : BigFloat(0)
@@ -88,7 +90,6 @@ function run_and_plot()
 
             # --- Effective case ---
             zeta_1_s = p_funcs.zeta_1(w*epsilon)
-            d_zeta_1_s = p_funcs.d_zeta_1(w*epsilon)
             lambda_val_s = p_funcs.lambda(w*epsilon) 
             gamma_val_s = (sqrt(zeta_1_s^2-1))/p_funcs.k1(epsilon)#p_funcs.gamma(w*epsilon)#(sqrt(zeta_1_s^2-1))/p_funcs.k1(w*epsilon)
             u_s = (zeta_1_s >= 1) ? acosh(zeta_1_s) : BigFloat(0)
@@ -99,23 +100,11 @@ function run_and_plot()
             energy1 = harmEnergy(1, dimensions, b, cache)
 
             cache2 = Dict{Int, Tuple{BigFloat, BigFloat}}()
-            cache3 = Dict{Int, Tuple{BigFloat, BigFloat}}()
             energy1star = harmEnergy(1, dimensions, b_s, cache2)
-
-            if balanced
-                energystar = harmEnergy(floor(Int,num_fermions/2), dimensions, b_s, cache2) + harmEnergy(ceil(Int,num_fermions/2), dimensions, b_s, cache3)
-            else
-                energystar = harmEnergy(num_fermions, dimensions, b_s, cache3)
-            end
+            energystar = energy_calc(num_fermions, dimensions, b_s, cache2)
 
 
-            if mode == "thermo"
-                factor_regular = (lambda_val / gamma_val) 
-                factor_star = (w^2)*lambda_val_s/gamma_val_s 
-            else
-                factor_regular = 0.5*(gamma_val + 1/gamma_val)
-                factor_star = (w/2)*(gamma_val_s/w + w/gamma_val_s)
-            end
+            factor_regular, factor_star = factor_calc(lambda_val, gamma_val, w, lambda_val_s, gamma_val_s)
 
             #cache0 = Dict{Int, Tuple{BigFloat, BigFloat}}()
             #energy_n2c = harmEnergy(ceil(Int,num_fermions/2), dimensions, b, cache0)
