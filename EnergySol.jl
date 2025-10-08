@@ -96,7 +96,7 @@ function get_factor(mode::String)
         # Return a new function for the default calculation
         return (lambda, gamma, w, lambda_s, gamma_s) -> begin
             factor_regular = 0.5 * (gamma + 1 / gamma)
-            factor_star = (w / 2) * (gamma_s / w + w / gamma_s)
+            factor_star = (w / 2) * (gamma_s / w + w / gamma_s)#0.5*((1+gamma_s^2/w^2)/lambda_s)*(w^2) * lambda_s / gamma_s    #(w / 2) * (gamma_s / w + w / gamma_s)
             return factor_regular, factor_star
         end
     end

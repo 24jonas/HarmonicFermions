@@ -1,21 +1,21 @@
 {
-    "bigfloat_precision": 200,
+    "bigfloat_precision": 400,
     "run_id": "normal",
     "mode": "ham",
     "dimensions": 2,
-    "propagator_choice": "PA",
+    "propagator_choice": "FA",
     "bead_counts": [
         2,
         4,
-        6,
         8,
-        64
+        12,
+        16
     ],
     "num_fermions": 3,
     "tau_range": {
-        "stop": 20.25,
+        "stop": 140.25,
         "start": 0.25
     },
     "balanced": false,
-    "interaction w": 1.5
+    "interaction w": 0.5
 }
