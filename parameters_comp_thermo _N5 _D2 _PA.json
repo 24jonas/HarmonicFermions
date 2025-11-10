@@ -1,0 +1,17 @@
+{
+    "bigfloat_precision": 2048,
+    "run_id": "comp_thermo _N5 _D2 _PA",
+    "mode": "thermo",
+    "dimensions": 2,
+    "propagator_choice": "PA",
+    "bead_counts": [
+        60
+    ],
+    "num_fermions": 5,
+    "tau_range": {
+        "stop": 20.25,
+        "start": 0.25
+    },
+    "balanced": false,
+    "interaction w": 1.0
+}
