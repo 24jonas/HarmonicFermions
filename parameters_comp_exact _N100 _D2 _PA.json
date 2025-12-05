@@ -1,0 +1,17 @@
+{
+    "bigfloat_precision": 20000,
+    "run_id": "comp_exact _N100 _D2 _PA",
+    "mode": "exact",
+    "dimensions": 2,
+    "propagator_choice": "PA",
+    "bead_counts": [
+        200
+    ],
+    "num_fermions": 100,
+    "tau_range": {
+        "stop": 10.25,
+        "start": 0.25
+    },
+    "balanced": false,
+    "interaction w": 0.5
+}

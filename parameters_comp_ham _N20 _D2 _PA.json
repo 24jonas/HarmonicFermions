@@ -1,0 +1,20 @@
+{
+    "bigfloat_precision": 10000,
+    "run_id": "comp_ham _N20 _D2 _PA",
+    "mode": "ham",
+    "dimensions": 2,
+    "propagator_choice": "PA",
+    "bead_counts": [
+        2,
+        4,
+        8,
+        16
+    ],
+    "num_fermions": 20,
+    "tau_range": {
+        "stop": 20.25,
+        "start": 0.25
+    },
+    "balanced": false,
+    "interaction w": 1.0
+}
