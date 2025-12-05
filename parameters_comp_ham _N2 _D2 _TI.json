@@ -5,7 +5,7 @@
     "dimensions": 2,
     "propagator_choice": "TI",
     "bead_counts": [
-        15
+        18
     ],
     "num_fermions": 2,
     "tau_range": {

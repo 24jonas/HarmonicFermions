@@ -1,13 +1,13 @@
 {
     "bigfloat_precision": 2048,
-    "run_id": "comp_ham _N5 _D2 _TI",
-    "mode": "ham",
-    "dimensions": 2,
+    "run_id": "comp_thermo _N10 _D1 _TI",
+    "mode": "thermo",
+    "dimensions": 1,
     "propagator_choice": "TI",
     "bead_counts": [
-        18
+        15
     ],
-    "num_fermions": 5,
+    "num_fermions": 10,
     "tau_range": {
         "stop": 20.25,
         "start": 0.25

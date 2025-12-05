@@ -1,11 +1,11 @@
 {
     "bigfloat_precision": 2048,
-    "run_id": "comp_ham _N5 _D2 _TI",
+    "run_id": "comp_ham _N5 _D1 _FA",
     "mode": "ham",
-    "dimensions": 2,
-    "propagator_choice": "TI",
+    "dimensions": 1,
+    "propagator_choice": "FA",
     "bead_counts": [
-        18
+        4
     ],
     "num_fermions": 5,
     "tau_range": {

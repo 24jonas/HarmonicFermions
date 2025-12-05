@@ -39,13 +39,17 @@ set style line 9 lc rgb '#228B22' # ForestGreen
 # dt 2 specifies a dash pattern.
 # set style line 13 lc rgb '#000000' dt 2
 
+# 2 for d1, 3 for d2
+# 12.5 for d1, 11 for d2 
+# 50 for d1, 30 for d2
+
 # 7. Plot the data (without title attributes)
 plot 'data_comp_ham_N2_D2_PA.csv' using 1:($2 - 3) with lines ls 1, \
      'data_comp_ham_N5_D2_PA.csv' using 1:($2 - 11) with lines ls 2, \
 	 'data_comp_ham_N10_D2_PA.csv' using 1:($2 - 30) with lines ls 3, \
-     'data_comp_ham_N2_D2_TI.csv' using 1:($2 - 3) with lines ls 4, \
-	 'data_comp_ham_N5_D2_TI.csv' using 1:($2 - 11) with lines ls 5, \
-	 'data_comp_ham_N10_D2_TI.csv' using 1:($2 - 30) with lines ls 6, \
+     'data_comp_ham _N2 _D2 _TI.csv' using 1:($2 - 3) with lines ls 4, \
+	 'data_comp_ham _N5 _D2 _TI.csv' using 1:($2 - 11) with lines ls 5, \
+	 'data_comp_ham _N10 _D2 _TI.csv' using 1:($2 - 30) with lines ls 6, \
      'data_comp_ham_N2_D2_FA.csv' using 1:($2 - 3) with lines ls 7, \
 	 'data_comp_ham_N5_D2_FA.csv' using 1:($2 - 11) with lines ls 8, \
 	 'data_comp_ham_N10_D2_FA.csv' using 1:($2 - 30) with lines ls 9, \
