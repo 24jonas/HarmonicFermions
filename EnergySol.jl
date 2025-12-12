@@ -120,3 +120,138 @@ end
 
 
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+module EnergySol
+
+export harmEnergy, get_factor, get_energy_calc, calculate_thermo_energy_discrete
+
+# --- Existing analytic functions (z_and_derivative...) would be here ---
+
+# 1. Single Particle Partition Function (Value Only)
+function z_high_precision(i::Int, d::Int, b::BigFloat)
+    if !(0 < b < 1)
+        return zero(BigFloat)
+    end
+    
+    b_i = b^i
+    one_minus_b_i = 1 - b_i
+    
+    # Direct formula for z_i = b^(i*d/2) / (1 - b^i)^d
+    z = b^(BigFloat(i * d) / 2) / (one_minus_b_i)^d
+    
+    return z
+end
+
+# 2. Recursive Many-Body Partition Function
+function Z_recursive!(n::Int, d::Int, b::BigFloat, cache::Dict)
+    # Check cache for this specific n (Note: Cache must be cleared if b changes!)
+    if haskey(cache, n)
+        return cache[n]
+    end
+    
+    # Base case: Z_0 = 1
+    if n == 0
+        return one(BigFloat)
+    end
+
+    total_Z = zero(BigFloat)
+
+    for i in 1:n
+        # Get z_i 
+        z_i = z_high_precision(i, d, b)
+
+        # Recursive call for the remaining n-i particles
+        Z_ni = Z_recursive!(n - i, d, b, cache)
+        
+        # Alternating sign for Fermions: (-1)^(i-1)
+        sign = iseven(i - 1) ? 1 : -1
+
+        # Newton-Girard Formula term
+        total_Z += sign * z_i * Z_ni
+    end
+
+    # Final result is (1/n) * sum
+    final_Z = total_Z / n
+    
+    cache[n] = final_Z
+    return final_Z
+end 
+
+# 3. Vectorized Discrete Energy Calculation
+"""
+Calculates the thermodynamic energy using finite differences.
+Args:
+    tau_values: Vector of tau points.
+    b_values: Vector of b values corresponding to tau_values (calculated via Propagators).
+    num_fermions: Number of particles.
+    dimensions: Dimensions.
+Returns:
+    (tau_midpoints, energies)
+"""
+function calculate_thermo_energy_discrete(tau_values::AbstractVector, b_values::AbstractVector, num_fermions::Int, dimensions::Int)
+    
+    num_points = length(b_values)
+    Z_values = Vector{BigFloat}(undef, num_points)
+    
+    # --- Step A: Calculate Z for every point ---
+    # We use a fresh cache for each point because 'b' is different for every tau.
+    # Parallelizing this loop significantly speeds up high-precision calculation.
+    Base.Threads.@threads for i in 1:num_points
+        local_cache = Dict{Int, BigFloat}()
+        Z_values[i] = Z_recursive!(num_fermions, dimensions, b_values[i], local_cache)
+    end
+
+    # --- Step B: Compute Discrete Derivative ---
+    # E ≈ -Δ(ln(Z)) / Δτ
+    
+    num_intervals = length(tau_values) - 1
+    energies = Vector{Float64}(undef, num_intervals)
+    tau_midpoints = Vector{Float64}(undef, num_intervals)
+    
+    for i in 1:num_intervals
+        tau1 = tau_values[i]
+        tau2 = tau_values[i+1]
+        dt = tau2 - tau1
+        
+        Z1 = Z_values[i]
+        Z2 = Z_values[i+1]
+        
+        # Calculate logarithmic derivative discretely
+        # We assume Z is positive (valid for harmonic fermions ground state / canonical ensemble)
+        delta_log_Z = log(Z2) - log(Z1)
+        
+        energies[i] = -Float64(delta_log_Z / dt)
+        
+        # Assign energy to the midpoint of the interval
+        tau_midpoints[i] = (tau1 + tau2) / 2.0
+    end
+    
+    return tau_midpoints, energies
+end
+
+end # module
