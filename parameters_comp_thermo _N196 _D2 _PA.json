@@ -1,5 +1,5 @@
 {
-    "bigfloat_precision": 25000,
+    "bigfloat_precision": 30000,
     "run_id": "comp_thermo _N196 _D2 _PA",
     "mode": "thermo",
     "dimensions": 2,

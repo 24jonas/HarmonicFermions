@@ -27,7 +27,6 @@ gr()
 
 function run_and_plot()
     # Load all parameters from the external file
-    
     params_to_save = Dict(
         "mode" => mode,
         "run_id" => run_id,
@@ -35,10 +34,7 @@ function run_and_plot()
         "dimensions" => dimensions,
         "propagator_choice" => propagator_choice,
         "bead_counts" => bead_counts,
-        "tau_range" => Dict(
-            "start" => tau_start,
-            "stop" => tau_stop
-        ),
+        "tau_range" => Dict("start" => tau_start, "stop" => tau_stop),
         "bigfloat_precision" => bigfloat_precision,
         "balanced" => balanced,
         "interaction w" => w
@@ -49,15 +45,18 @@ function run_and_plot()
         JSON.print(f, params_to_save, 4)
     end
 
-	setprecision(BigFloat, bigfloat_precision)
+    setprecision(BigFloat, bigfloat_precision)
 
     # --- Propagator Definition ---
-    # Using a named tuple for clean access
     p_funcs = propagators[propagator_choice]
 
     # --- Plotting Setup ---
+    # Discrete derivative gives energy at the interval midpoints
+    tau_midpoints = (tau_values[1:end-1] .+ tau_values[2:end]) ./ 2.0
+    results_df = DataFrame(tau = tau_midpoints)
+
     plt = plot(
-        title = "High-Precision Energy vs. Tau for n=$num_fermions, d=$dimensions",
+        title = "High-Precision Energy vs. Tau (Discrete Derivative)",
         xlabel = "τ (Imaginary Time)",
         ylabel = "Energy E",
         legend = :topright,
@@ -65,76 +64,68 @@ function run_and_plot()
         grid = true
     )
 
-    results_df = DataFrame(tau = collect(tau_values))
-
     factor_calc = get_factor(mode)
-    energy_calc = get_energy_calc(balanced)
 
     # --- Main Loop ---
     for N in bead_counts
-        # CHANGE 1: Pre-allocate the results array. `undef` is fine since we'll fill every spot.
-        energies = Vector{Float64}(undef, length(tau_values)) 
-        
-        # CHANGE 2: Add the `@threads` macro to parallelize this loop.
-        # We loop over indices (1, 2, 3...) instead of values to ensure thread safety.
+        println("Processing N = $N...")
+
+        # 1. Pre-calculate b values (Thread-safe)
+        b_values = Vector{BigFloat}(undef, length(tau_values))
+        b_values_s = Vector{BigFloat}(undef, length(tau_values))
+
         @threads for i in eachindex(tau_values)
             tau = tau_values[i]
-    
+            epsilon = BigFloat(tau) / BigFloat(N)
             
+            # --- Standard Propagator (w=1) ---
+            zeta_1 = p_funcs.zeta_1(epsilon)
             u = (zeta_1 >= 1) ? acosh(zeta_1) : BigFloat(0)
-            # 1. Pre-calculate b values for all tau points
-            b_values = Vector{BigFloat}(undef, length(tau_values))
+            b_values[i] = exp(-N * u)
 
-            for i in eachindex(tau_values)
-                tau = tau_values[i]
-                epsilon = BigFloat(tau) / BigFloat(N)
-                zeta_1 = p_funcs.zeta_1(epsilon)
-                lambda_val = p_funcs.lambda(epsilon)
-                gamma_val = p_funcs.gamma(epsilon) #p_funcs.gamma(epsilon) #goes to 1 for exact
-                
-                # Calculate propagator specifics (e.g., using PA)
-                zeta_1 = p_funcs.zeta_1(epsilon)
-                u = (zeta_1 >= 1) ? acosh(zeta_1) : BigFloat(0)
-                b_values[i] = exp(-N * u)
-            end
-
-
-
-            # --- Effective case ---
-            
-            # 1. Pre-calculate b values for all tau points
-            b_values_s = Vector{BigFloat}(undef, length(tau_values))
-
-            for i in eachindex(tau_values)
-                tau = tau_values[i]
-                epsilon = BigFloat(tau) / BigFloat(N)
-                zeta_1_s = p_funcs.zeta_1(w*epsilon)
-                lambda_val_s = p_funcs.lambda(w*epsilon) 
-                gamma_val_s = (sqrt(zeta_1_s^2-1))/p_funcs.k1(epsilon)#p_funcs.gamma(w*epsilon)#(sqrt(zeta_1_s^2-1))/p_funcs.k1(w*epsilon)
-                u_s = (zeta_1_s >= 1) ? acosh(zeta_1_s) : BigFloat(0)
-                
-                b_values_s[i] = exp(-N * u_s)
-            end
-
-            # 2. Compute energies using the new discrete function
-            # 2. Compute energies using the new discrete function
-            tau_mid, energy = EnergySol.calculate_thermo_energy_discrete(tau_values, b_values, num_fermions, dimensions)
-            tau_mid_s, energy1star = EnergySol.calculate_thermo_energy_discrete(tau_values, b_values_s, 1 dimensions)
-            tau_mid_s, energystar = EnergySol.calculate_thermo_energy_discrete(tau_values, b_values_s, num_fermions, dimensions)
-
-            factor_regular, factor_star = factor_calc(lambda_val, gamma_val, w, lambda_val_s, gamma_val_s)
-
-            energy = factor_regular*energy1 + factor_star*(energystar -energy1star) 
-            
-            energies[i] = energy
+            # --- Effective Propagator (Interaction w) ---
+            zeta_1_s = p_funcs.zeta_1(w*epsilon)
+            u_s = (zeta_1_s >= 1) ? acosh(zeta_1_s) : BigFloat(0)
+            b_values_s[i] = exp(-N * u_s)
         end
 
-        results_df[!, "N_$(N)"] = energies
+        # 2. Compute Energies via Discrete Derivative
+        # IMPORTANT: 'energy_1_std' must be for 1 particle (COM) to match the formula logic.
+        
+        # A. Center of Mass Energy at w=1 (1 Particle)
+        _, energy_1_std = EnergySol.calculate_thermo_energy_discrete(tau_values, b_values, 1, dimensions)
+        
+        # B. Total Energy at w (N Particles)
+        _, energy_tot_star = EnergySol.calculate_thermo_energy_discrete(tau_values, b_values_s, num_fermions, dimensions)
+        
+        # C. Center of Mass Energy at w (1 Particle)
+        _, energy_1_star = EnergySol.calculate_thermo_energy_discrete(tau_values, b_values_s, 1, dimensions)
 
-        plot!(plt, tau_values, energies, label="N = $N beads")
+        # 3. Apply the COM Correction Formula
+        # Formula: E_final = E_COM(w=1) + [ E_Total(w) - E_COM(w) ]
+        # This replaces the Relative Energy at w=1 with Relative Energy at w, 
+        # while keeping the COM Energy at w=1.
+        
+        final_energies = Vector{Float64}(undef, length(energy_1_std))
+
+        for k in eachindex(energy_1_std)
+            
+            # Note: Since calculate_thermo_energy_discrete returns the Physical Energy directly,
+            # the implicit factors are 1.0. Applying analytic factors (like w^2) here would 
+            # incorrectly scale the already-physical energies. We preserve the STRUCTURE of 
+            # the user's formula which performs the physics separation.
+            
+            term_com = energy_1_std[k]               # E_COM(w=1)
+            term_rel = energy_tot_star[k] - energy_1_star[k] # E_Rel(w)
+            
+            final_energies[k] = term_com + term_rel
+        end
+
+        results_df[!, "N_$(N)"] = final_energies
+        plot!(plt, tau_midpoints, final_energies, label="N = $N")
     end
 
-    # --- Display the Plot ---
+    # --- Save and Display ---
     output_filename = "data_$(run_id).csv"
     CSV.write(output_filename, results_df)
 

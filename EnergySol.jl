@@ -1,7 +1,7 @@
 module EnergySol
 
 # Make the main recursive function available for import.
-export harmEnergy, get_factor, get_energy_calc
+export harmEnergy, get_factor, get_energy_calc, calculate_thermo_energy_discrete
 
 
 function z_and_derivative_high_precision(i::Int, d::Int, b::BigFloat)
@@ -119,7 +119,6 @@ end
 
 
 
-end
 
 
 
@@ -146,9 +145,7 @@ end
 
 
 
-module EnergySol
 
-export harmEnergy, get_factor, get_energy_calc, calculate_thermo_energy_discrete
 
 # --- Existing analytic functions (z_and_derivative...) would be here ---
 
@@ -254,4 +251,13 @@ function calculate_thermo_energy_discrete(tau_values::AbstractVector, b_values::
     return tau_midpoints, energies
 end
 
-end # module
+
+
+
+
+
+
+
+
+
+end#module
