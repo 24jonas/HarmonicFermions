@@ -1,7 +1,7 @@
 module EnergySol
 
 # Make the main recursive function available for import.
-export harmEnergy, get_factor, get_energy_calc, calculate_thermo_energy_discrete
+export harmEnergy, get_factor, get_energy_calc, calculate_thermo_energy_discrete, Z_recursive!
 
 
 function z_and_derivative_high_precision(i::Int, d::Int, b::BigFloat)
