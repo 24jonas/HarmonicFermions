@@ -165,20 +165,33 @@ function run_and_plot()
         "interaction w" => w
     )
 
-    test_precision = 34000 #starting point
+    test_precision = 10000 #starting point
     precision_step = 1000
     err_threshold = 0.00000001
 
     ref_Zn = get_ZnTau(bigfloat_precision, propagator_choice, tau_values, bead_counts, num_fermions, dimensions)
+    
+    print(" ---- ")
+    print(" Finished reference")
+    print(" ---- ")
+    
     test_Zn = get_ZnTau(test_precision, propagator_choice, tau_values, bead_counts, num_fermions, dimensions)
     err = abs.((ref_Zn .- test_Zn) ./ ref_Zn)
     max_err = maximum(err)
+
+    print(" ---- ")
+    print(" Finished first test")
+    print(" ---- ")
+
+    history = DataFrame(bits = Int[], error = Float64[])
+    push!(history, (bits=test_precision, error=log10(max_err)))
 
     while isnan(max_err) || max_err > err_threshold
         test_precision = test_precision + precision_step
         test_Zn = get_ZnTau(test_precision, propagator_choice, tau_values, bead_counts, num_fermions, dimensions)
         err = abs.((ref_Zn .- test_Zn) ./ ref_Zn)
         max_err = maximum(err)
+        push!(history, (bits=test_precision, error=log10(max_err)))
 
         print(" ---- ")
         @printf "%.4e\n" max_err
@@ -198,6 +211,10 @@ function run_and_plot()
     println("  $(round(max_mem_mb, digits=2)) MB")
     println("  $(round(max_mem_gb, digits=3)) GB")
     println("------------------------------------------------")
+
+    # 3. Save to CSV
+    filename = "convergence_history_$(run_id).csv"
+    CSV.write(filename, history)
 
 end
 
