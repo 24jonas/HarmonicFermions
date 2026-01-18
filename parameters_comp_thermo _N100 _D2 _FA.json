@@ -1,5 +1,5 @@
 {
-    "bigfloat_precision": 25000,
+    "bigfloat_precision": 20000,
     "run_id": "comp_thermo _N100 _D2 _FA",
     "mode": "thermo",
     "dimensions": 2,
@@ -12,7 +12,7 @@
     ],
     "num_fermions": 100,
     "tau_range": {
-        "stop": 20.25,
+        "stop": 15.25,
         "start": 0.25
     },
     "balanced": false,

@@ -1,18 +1,18 @@
 {
-    "bigfloat_precision": 25000,
-    "run_id": "comp_thermo _N100 _D2 _TI",
-    "mode": "thermo",
+    "bigfloat_precision": 170000,
+    "run_id": "comp_ham _N400 _D2 _PA",
+    "mode": "ham",
     "dimensions": 2,
-    "propagator_choice": "TI",
+    "propagator_choice": "PA",
     "bead_counts": [
         2,
         4,
         8,
         16
     ],
-    "num_fermions": 100,
+    "num_fermions": 400,
     "tau_range": {
-        "stop": 20.25,
+        "stop": 15.25,
         "start": 0.25
     },
     "balanced": false,

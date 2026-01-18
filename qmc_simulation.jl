@@ -51,6 +51,8 @@ function run_and_plot()
 
 	setprecision(BigFloat, bigfloat_precision)
 
+    print("... set precision \n")
+
     # --- Propagator Definition ---
     # Using a named tuple for clean access
     p_funcs = propagators[propagator_choice]
@@ -70,10 +72,14 @@ function run_and_plot()
     factor_calc = get_factor(mode)
     energy_calc = get_energy_calc(balanced)
 
+    print("... plot set up \n")
+
     # --- Main Loop ---
     for N in bead_counts
         # CHANGE 1: Pre-allocate the results array. `undef` is fine since we'll fill every spot.
         energies = Vector{Float64}(undef, length(tau_values)) 
+
+        print("... working on bead $N \n")
         
         # CHANGE 2: Add the `@threads` macro to parallelize this loop.
         # We loop over indices (1, 2, 3...) instead of values to ensure thread safety.
