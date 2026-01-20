@@ -66,6 +66,14 @@ function run_and_plot()
     #     ylim = (bottomlim, toplim),
     #     grid = true
     # )
+    # plt = plot(
+    #     title = "High-Precision Energy vs. Tau for n=$num_fermions, d=$dimensions",
+    #     xlabel = "τ (Imaginary Time)",
+    #     ylabel = "Energy E",
+    #     legend = :topright,
+    #     ylim = (bottomlim, toplim),
+    #     grid = true
+    # )
 
     results_df = DataFrame(tau = collect(tau_values))
 
@@ -130,6 +138,7 @@ function run_and_plot()
     output_filename = "data_$(run_id).csv"
     CSV.write(output_filename, results_df)
 
+    #display(plt)
     #display(plt)
 end
 
