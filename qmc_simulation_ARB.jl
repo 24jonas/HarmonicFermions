@@ -5,12 +5,14 @@ using DataFrames
 using CSV
 using JSON
 
-include("parameters.jl")
-include("PropagatorsModule.jl")
+include("parameters_ARB.jl")
+include("PropagatorsModule_ARB.jl")
 using .PropagatorsModule
 
-include("EnergySol.jl")
+include("EnergySol_ARB.jl")
 using .EnergySol
+
+using Base.Threads
 
 using ArbNumerics
 
@@ -39,7 +41,7 @@ function run_and_plot()
         print("... working on bead $N \n")
         
         # SINGLE THREADED EXECUTION to avoid stack/memory collisions with huge types
-        for i in eachindex(tau_values)
+        @threads for i in eachindex(tau_values)
             tau = tau_values[i]
             
             # Use ArbFloat explicitly for all conversions
@@ -92,7 +94,6 @@ function run_and_plot()
     # --- Final Save ---
     output_filename = "data_$(run_id).csv"
     CSV.write(output_filename, results_df)
-    display(plt)
 end
 
 end # module

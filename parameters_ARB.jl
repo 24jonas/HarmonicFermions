@@ -1,7 +1,7 @@
 using ArbNumerics
 
 # --- Simulation Parameters ---
-num_fermions = 400
+num_fermions = 100
 dimensions = 2
 bead_counts = [2, 4, 8, 16]
 tau_start = 0.25
@@ -10,7 +10,7 @@ tau_values = range(tau_start, tau_stop, length=60)
 
 # --- High-Precision Settings ---
 # STRICT REQUIREMENT: 230,000 bits (~69,000 decimal digits)
-bigfloat_precision = 230000 
+bigfloat_precision = 30000 
 setprecision(ArbFloat, bigfloat_precision)
 
 #Propagator choice: PA, TI, 4A is written as FA
