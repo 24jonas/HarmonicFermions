@@ -12,7 +12,7 @@ using .PropagatorsModule
 include("EnergySol_ARB.jl")
 using .EnergySol
 
-using Base.Threads
+#using Base.Threads
 
 using ArbNumerics
 
@@ -41,7 +41,7 @@ function run_and_plot()
         print("... working on bead $N \n")
         
         # SINGLE THREADED EXECUTION to avoid stack/memory collisions with huge types
-        @threads for i in eachindex(tau_values)
+        for i in eachindex(tau_values)
             tau = tau_values[i]
             
             # Use ArbFloat explicitly for all conversions
