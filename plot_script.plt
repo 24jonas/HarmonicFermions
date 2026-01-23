@@ -14,7 +14,7 @@ set ylabel "E"
 
 # 4. Set the axis ranges
 set xrange [0:15]
-set yrange [900:1000] 
+set yrange [9500:11500] 
 #						          
 
 
@@ -42,11 +42,11 @@ set style line 12 lc rgb '#00008B' # DarkBlue
 set style line 13 lc rgb '#000000' dt 2
 
 # 7. Plot the data (without title attributes)
-plot 'data_comp_ham _N500 _D2 _FA.csv' using 1:2 with lines ls 6, \
+plot 'data_comp_ham _N500 _D2 _PA.csv' using 1:2 with lines ls 6, \
      ''                 using 1:3 with lines ls 5, \
      ''                 using 1:4 with lines ls 4, \
 	 ''					using 1:5 with lines ls 3, \
-     'data_comp_thermo _N500 _D2 _FA.csv' using 1:2 with lines ls 12, \
+     'data_comp_thermo _N500 _D2 _PA.csv' using 1:2 with lines ls 12, \
      ''                   using 1:3 with lines ls 11, \
      ''                   using 1:4 with lines ls 10, \
 	 ''					  using 1:5 with lines ls 9, \
