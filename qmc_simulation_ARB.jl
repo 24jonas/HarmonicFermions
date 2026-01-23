@@ -27,16 +27,19 @@ function run_and_plot()
 
     p_funcs = propagators[propagator_choice]
 
-    results_df = DataFrame(tau = collect(tau_values))
+    results_df_T = DataFrame(tau = collect(tau_values))
+    results_df_H = DataFrame(tau = collect(tau_values))
 
-    factor_calc = get_factor(mode)
+    factor_calc_T = get_factor("thermo")
+    factor_calc_H = get_factor("ham")
     energy_calc = get_energy_calc(balanced)
 
     print("... plot set up \n")
 
     # --- Main Loop ---
     for N in bead_counts
-        energies = Vector{Float64}(undef, length(tau_values)) 
+        energies_T = Vector{Float64}(undef, length(tau_values))
+        energies_H = Vector{Float64}(undef, length(tau_values)) 
 
         print("... working on bead $N \n")
         
@@ -70,11 +73,14 @@ function run_and_plot()
             # Pass 'nothing' for cache compatibility
             energystar = energy_calc(num_fermions, dimensions, b_s, nothing)
 
-            factor_regular, factor_star = factor_calc(lambda_val, gamma_val, w, lambda_val_s, gamma_val_s)
+            factor_regular_T, factor_star_T = factor_calc_T(lambda_val, gamma_val, w, lambda_val_s, gamma_val_s)
+            factor_regular_H, factor_star_H = factor_calc_H(lambda_val, gamma_val, w, lambda_val_s, gamma_val_s)
 
-            energy = factor_regular*energy1 + factor_star*(energystar - energy1star) 
-            
-            energies[i] = energy
+            energy_T = factor_regular_T*energy1 + factor_star_T*(energystar - energy1star) 
+            energy_H = factor_regular_H*energy1 + factor_star_H*(energystar - energy1star) 
+
+            energies_T[i] = energy_T
+            energies_H[i] = energy_H
             
             # MANUAL GC:
             # 230,000 bits is ~30KB per number.
@@ -85,15 +91,19 @@ function run_and_plot()
             end
         end
 
-        results_df[!, "N_$(N)"] = energies
+        results_df_T[!, "N_$(N)"] = energies_T
+        results_df_H[!, "N_$(N)"] = energies_H
 
         # Save partial data
-        CSV.write("partial_data_$(run_id).csv", results_df)
+        CSV.write("partial_data_$(run_id_T).csv", results_df_T)
+        CSV.write("partial_data_$(run_id_H).csv", results_df_H)
     end
 
     # --- Final Save ---
-    output_filename = "data_$(run_id).csv"
-    CSV.write(output_filename, results_df)
+    output_filename_T = "data_$(run_id_T).csv"
+    output_filename_H = "data_$(run_id_H).csv"
+    CSV.write(output_filename_T, results_df_T)
+    CSV.write(output_filename_H, results_df_H)
 end
 
 end # module
