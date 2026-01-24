@@ -6,7 +6,7 @@
 module QMC
 
 using Polynomials
-using Plots
+# using Plots
 using Base.Threads
 
 using DataFrames
@@ -25,7 +25,7 @@ include("EnergySol.jl")
 using .EnergySol
 
 # Ensure you have a plotting backend, e.g., Pkg.add("GR")
-gr() 
+# gr() 
 
 
 # ========================================== Get peak memory
@@ -165,7 +165,7 @@ function run_and_plot()
         "interaction w" => w
     )
 
-    test_precision = 10000 #starting point
+    test_precision = 8000 #starting point
     precision_step = 1000
     err_threshold = 0.00000001
 
@@ -198,6 +198,11 @@ function run_and_plot()
         print(" <--> ")
         print(test_precision)
         print(" ---- ")
+    end
+
+    if test_precision >= bigfloat_precision
+        print(" No convergence achieved up to bigfloat precision of ")
+        print(bigfloat_precision)
     end
 
     # --- REPORT PEAK MEMORY ---

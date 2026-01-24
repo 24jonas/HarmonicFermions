@@ -1,17 +1,17 @@
 # --- Simulation Parameters ---
-num_fermions = 300
+num_fermions = 128
 dimensions = 2
-bead_counts = [2, 4, 8, 16]
-tau_start = 0.25
+bead_counts = [200]
+tau_start = 5.25
 tau_stop = 15.25
-tau_values = range(tau_start, tau_stop, length=60)
+tau_values = range(tau_start, tau_stop, length=48)
 
 # --- High-Precision Settings ---
 # Set precision for BigFloat (in bits). 50 decimal digits ≈ 167 bits.
-bigfloat_precision = 108000
+bigfloat_precision = 29000
 
 #Propagator choice: PA, TI, 4A is written as FA
-propagator_choice = Symbol("FA")
+propagator_choice = Symbol("PA")
 
 mode = "thermo" # thermo, ham
 

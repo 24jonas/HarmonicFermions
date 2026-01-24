@@ -56,7 +56,7 @@ b2 = -0.295258
 # 5. Plotting
 set grid
 # set yrange [0:*]
-set term wxt size 1500,500 font "Arial Black,11.5" linewidth 2# Use 'qt' or 'wxt' or 'png'
+set term qt size 1500,500 font "Arial Black,11.5" linewidth 2# Use 'qt' or 'wxt' or 'png'
 
 set multiplot layout 1,2
 
@@ -71,7 +71,7 @@ set multiplot layout 1,2
          f(x) with lines lw 2 title eq1
 
     # --- Plot 2: n vs memory ---
-	set title "Error convergence"
+	set title "Error convergence for n=128"
     set xlabel "Simulated bits of precision"
 	set ylabel "Log10 of Relative error for Z"
     set key top right Left reverse
