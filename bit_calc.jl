@@ -8,7 +8,7 @@ include("PropagatorsModule.jl")
 using .PropagatorsModule
 
 # --- SETUP ---
-num_fermions = 500      # FIXED: The number of particles (Recursion Depth)
+num_fermions = 1024       # FIXED: The number of particles (Recursion Depth)
 dimensions = 2
 beta = 15.25            # Max imaginary time (Worst case)
 bead_counts = [200] # We check scaling across these bead counts

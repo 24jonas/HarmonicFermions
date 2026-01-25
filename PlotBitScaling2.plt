@@ -1,16 +1,23 @@
 # 1. Define the Data Block (embedded data)
 
 $Data << EOD
-16	2000
-32	4000
-64	10000
-96	18000
-128	28000
-160	39000
+2	22
+4	88
+8	308
+16	990
+32	3080
+64	9241
+96	17447
+128	27282
+160	38525
 192	51000
-224	65000
-256	80000
-288	96000
+224	64684
+256	79381
+288	95134
+320	111767
+512	229166
+768	424713
+1024	657310
 EOD
 
 $Data2 << EOD
@@ -39,15 +46,14 @@ EOD
 
 # 2. Define the Functions
 # f(x) for Column 1 vs 2
-f(x) = a1 + b1 * x**c1
+f(x) = a1 * x**1.5 + b1 * x
 # g(x) for Column 1 vs 3
 g(x) = a2 + b2 * x
 
 # 3. Initialize Parameters (Crucial for power laws)
 # Guessing quadratic (c=2) for the first plot
-a1 = 961.07789
-b1 = 13.54082
-c1 = 1.56393
+a1 = 20.38939
+b1 = -18.10829
 
 # Guessing quartic (c=4.5) for the second plot based on data shape
 a2 = 7934.55865
@@ -56,7 +62,7 @@ b2 = -0.295258
 # 5. Plotting
 set grid
 # set yrange [0:*]
-set term qt size 1500,500 font "Arial Black,11.5" linewidth 2# Use 'qt' or 'wxt' or 'png'
+set term wxt size 1500,500 font "Arial Black,11.5" linewidth 2# Use 'qt' or 'wxt' or 'png'
 
 set multiplot layout 1,2
 
@@ -66,7 +72,7 @@ set multiplot layout 1,2
     set ylabel "Simulated bits of precision needed"
     set key top left Left reverse
     # Create a label string with the found parameters
-    eq1 = sprintf("f(x) = %.2f + %.2e * x^{%.2f}", a1, b1, c1)
+    eq1 = sprintf("f(x) =  %.2f * x^{1.5} + %.2f * x", a1, b1)
     plot $Data using 1:2 with points pt 7 ps 1.5 title "Benchmark", \
          f(x) with lines lw 2 title eq1
 
@@ -75,7 +81,7 @@ set multiplot layout 1,2
     set xlabel "Simulated bits of precision"
 	set ylabel "Log10 of Relative error for Z"
     set key top right Left reverse
-    eq2 = sprintf("g(x) = %.2f + %.2e * x", a2, b2)
+    eq2 = sprintf("g(x) = %.3e + %.3e * x", a2, b2)
     plot $Data2 using 1:2 with points pt 7 ps 1.5 lc rgb "red" title "Benchmark", \
          g(x) with lines lw 2 lc rgb "blue" title eq2
 
