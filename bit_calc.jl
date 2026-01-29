@@ -1,94 +1,72 @@
-module PrecisionCheck
+module PrecisionPredictorContinuum
 
-using ArbNumerics
 using Printf
 
-# --- LOAD YOUR MODULES ---
-include("PropagatorsModule.jl")
-using .PropagatorsModule
+# --- PARAMETERS ---
+N = 128             # Number of particles
+beta = 15.25         # Inverse Temperature
+dimensions = 2       # Dimensions (d=2)
 
-# --- SETUP ---
-num_fermions = 1024       # FIXED: The number of particles (Recursion Depth)
-dimensions = 2
-beta = 15.25            # Max imaginary time (Worst case)
-bead_counts = [200] # We check scaling across these bead counts
+function predict_bits_continuum(n_particles, d, beta_val)
+    println("--- CONTINUUM PRECISION PREDICTOR ---")
+    println("Particles: $n_particles | Dim: $d | Beta: $beta_val")
+    println("---------------------------------------------")
 
-# Toggle this to see the difference
-propagator_choice = Symbol("PA") 
-# propagator_choice = Symbol("FA") 
+    # 1. CALCULATE EXACT BOSON ENERGY (Ground State)
+    # In the continuum limit (T -> 0), all Bosons sit in the lowest energy level.
+    # 2D HO Ground State Energy per particle = d/2 = 1.0 (in units of hw)
+    # Total E_B = N * E_0
+    
+    e_ground_single = d / 2.0
+    E_Boson = n_particles * e_ground_single
 
-# Low precision is fine for the *estimate* (we just need the exponent)
-setprecision(BigFloat, 2048) 
-
-function check_scaling(num_fermions, D, beta, bead_list, prop_choice)
-    println("--- PRECISION SCALING CHECK ---")
-    println("Particles: $num_fermions | Beta: $beta | Propagator: $prop_choice")
-    println("-------------------------------------------------------------")
-    @printf "%-10s | %-15s | %-15s | %-10s\n" "Beads" "Log(Noise)" "Log(Signal)" "Bits Needed"
-    println("-------------------------------------------------------------")
-
-    # 1. CALCULATE FIXED FERMIONIC SIGNAL (Physical Constant)
-    # This does not depend on beads, only on particle count/beta.
+    # 2. CALCULATE EXACT FERMION ENERGY (Stacked Shells)
+    # We fill energy shells k=0, 1, 2... until we run out of particles.
+    # Energy of shell k: E_k = k + d/2
+    # Degeneracy of shell k: Binomial(k + d - 1, d - 1)
+    
     E_Fermion = 0.0
-    count = 0
-    k = 1
-    while count < num_fermions
-        degeneracy = k 
-        take = min(degeneracy, num_fermions - count)
-        E_Fermion += take * k 
-        count += take
+    particles_left = n_particles
+    k = 0 # Shell index (0 = ground state)
+
+    while particles_left > 0
+        # Calculate degeneracy for this shell
+        if d == 1
+            deg = 1
+        elseif d == 2
+            deg = k + 1
+        else
+            deg = 1
+            for i in 1:(d-1)
+                deg = deg * (k + i) // i
+            end
+        end
+
+        # Fill the shell
+        take = min(deg, particles_left)
+        energy_of_shell = k + e_ground_single
+        
+        E_Fermion += take * energy_of_shell
+        particles_left -= take
         k += 1
     end
-    log_Z_F = -beta * E_Fermion # The Signal
 
-    # 2. LOOP OVER BEAD COUNTS
-    for P in bead_list
-        # P is the number of beads (Time Slices)
-        
-        # --- A. Get b from Propagator ---
-        p_funcs = propagators[prop_choice]
-        epsilon = ArbFloat(beta) / ArbFloat(P) # Epsilon depends on BEADS
-        
-        zeta_1 = p_funcs.zeta_1(epsilon)
-        u = (zeta_1 >= 1) ? acosh(zeta_1) : ArbFloat(0)
-        b = exp(-P * u)
-        
-        b_val = BigFloat(b)
+    # 3. CALCULATE BITS NEEDED
+    # Formula: Bits = Beta * (E_F - E_B) / ln(2)
+    # This represents the entropy cost of the Pauli Exclusion Principle.
+    
+    energy_gap = E_Fermion - E_Boson
+    bits_needed = (beta_val * energy_gap) / log(2)
 
-        # --- B. Calculate Z_Boson (Noise) ---
-        # The sums run up to num_fermions (Particles)
-        z_vals = Vector{BigFloat}(undef, num_fermions)
-        b_pow = b_val
-        
-        for i in 1:num_fermions
-            num = b_pow^(D/2)
-            den = (1 - b_pow)^D
-            z_vals[i] = abs(num / den)
-            if i < num_fermions; b_pow *= b_val; end
-        end
-        
-        Z = Vector{BigFloat}(undef, num_fermions + 1)
-        Z[1] = 1.0
-        
-        for k in 1:num_fermions
-            sum_Z = BigFloat(0.0)
-            for i in 1:k
-                sum_Z += z_vals[i] * Z[k - i + 1]
-            end
-            Z[k+1] = sum_Z / k
-        end
-        
-        log_Z_B = log(Z[num_fermions+1])
-        
-        # --- C. Compare ---
-        bits_needed = (log_Z_B - log_Z_F) / log(2)
-        
-        @printf "%-10d | %-15.2f | %-15.2f | %-10.0f\n" P log_Z_B log_Z_F bits_needed
-    end
-    println("-------------------------------------------------------------")
-    println("Note: Add ~64-128 bits buffer to 'Bits Needed' for safety.")
+    # --- OUTPUT ---
+    @printf "Boson Energy (E_B):    %10.2f\n" E_Boson
+    @printf "Fermion Energy (E_F):  %10.2f\n" E_Fermion
+    @printf "Energy Gap (dE):       %10.2f\n" energy_gap
+    println("---------------------------------------------")
+    @printf "BITS NEEDED (Exact):   %10.0f\n" bits_needed
+    @printf "Recommended (+128):    %10.0f\n" (bits_needed + 128)
 end
 
-check_scaling(num_fermions, dimensions, beta, bead_counts, propagator_choice)
+predict_bits_continuum(N, dimensions, beta)
 
-end # module
+end #module

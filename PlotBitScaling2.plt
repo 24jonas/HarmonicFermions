@@ -1,23 +1,16 @@
 # 1. Define the Data Block (embedded data)
 
 $Data << EOD
-2	22
-4	88
-8	308
-16	990
-32	3080
-64	9241
-96	17447
-128	27282
-160	38525
+16	1250
+32	3250
+64	9500
+96	17500
+128	27500
+160	38750
 192	51000
-224	64684
-256	79381
-288	95134
-320	111767
-512	229166
-768	424713
-1024	657310
+224	64750
+256	79500
+288	95250
 EOD
 
 $Data2 << EOD
@@ -46,14 +39,13 @@ EOD
 
 # 2. Define the Functions
 # f(x) for Column 1 vs 2
-f(x) = a1 * x**1.5 + b1 * x
+f(x) = a1 * (x**1.5 - x)
 # g(x) for Column 1 vs 3
 g(x) = a2 + b2 * x
 
 # 3. Initialize Parameters (Crucial for power laws)
 # Guessing quadratic (c=2) for the first plot
-a1 = 20.38939
-b1 = -18.10829
+a1 = 21.36459
 
 # Guessing quartic (c=4.5) for the second plot based on data shape
 a2 = 7934.55865
@@ -62,7 +54,7 @@ b2 = -0.295258
 # 5. Plotting
 set grid
 # set yrange [0:*]
-set term wxt size 1500,500 font "Arial Black,11.5" linewidth 2# Use 'qt' or 'wxt' or 'png'
+set term qt size 1500,500 font "Arial Black,11.5" linewidth 2# Use 'qt' or 'wxt' or 'png'
 
 set multiplot layout 1,2
 
@@ -72,7 +64,7 @@ set multiplot layout 1,2
     set ylabel "Simulated bits of precision needed"
     set key top left Left reverse
     # Create a label string with the found parameters
-    eq1 = sprintf("f(x) =  %.2f * x^{1.5} + %.2f * x", a1, b1)
+    eq1 = sprintf("f(x) =  %.2f * (x^{1.5} - x)" , a1)
     plot $Data using 1:2 with points pt 7 ps 1.5 title "Benchmark", \
          f(x) with lines lw 2 title eq1
 
