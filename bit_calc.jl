@@ -3,7 +3,7 @@ module PrecisionPredictorContinuum
 using Printf
 
 # --- PARAMETERS ---
-N = 128             # Number of particles
+N = 512             # Number of particles
 beta = 15.25         # Inverse Temperature
 dimensions = 2       # Dimensions (d=2)
 

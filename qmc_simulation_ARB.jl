@@ -12,18 +12,61 @@ using .PropagatorsModule
 include("EnergySol_ARB.jl")
 using .EnergySol
 
-#using Base.Threads
+using Base.Threads
 
 using ArbNumerics
 
 
 function run_and_plot()
-    
-    # --- Save Parameters ---
+
+    # ========================================================
+    # MEMORY USAGE DIAGNOSTIC (OPTIMIZED IMPLEMENTATION)
+    # ========================================================
+
+    # ========================================================
+    # MEMORY USAGE DIAGNOSTIC (CORRECTED FOR C-HEAP)
+    # ========================================================
 
     # Explicitly set precision again to be safe
     setprecision(ArbFloat, bigfloat_precision)
     print("... set precision to $bigfloat_precision bits \n")
+
+    println("------------------------------------------------")
+    println("Memory Diagnostic (N=$num_fermions, Threads=$(Threads.nthreads()), Precision=$(precision(ArbFloat)) bits):")
+
+    # 1. Calculate Theoretical Size of One ArbFloat
+    # ArbFloat stores: 
+    #   - A mid-point (mantissa) -> requires 'precision' bits
+    #   - A radius (error bound) -> relatively small, fixed size mag_t
+    #   - Struct overhead -> ~32-64 bytes
+    
+    bits = precision(ArbFloat)
+    bytes_per_number = (bits / 8) + 64 # +64 bytes for struct/radius overhead
+    
+    # 2. Active Working Memory (Per Thread)
+    # The new 'harmEnergy_fast' uses 4 vectors simultaneously:
+    # z_vals, z_prime_vals, Z, Z_prime
+    # Each vector has 'num_fermions' elements.
+    
+    total_elements_per_thread = num_fermions * 4
+    mem_per_thread_bytes = total_elements_per_thread * bytes_per_number
+    mem_total_active_bytes = mem_per_thread_bytes * Threads.nthreads()
+
+    # 3. Permanent Arrays (Output)
+    # This is for 'energies' (Float64), which is trivial. 
+    # If using 'calculate_thermo_energy_discrete', you might store b_values or Z_values.
+    mem_permanent_bytes = 0.0
+    
+    # Convert to MB
+    mb_active = mem_total_active_bytes / 1024^2
+    mb_per_thread = mem_per_thread_bytes / 1024^2
+
+    println("  Est. Size per Number: ~$(round(bytes_per_number/1024, digits=4)) KB")
+    println("  Per-Thread Cache:     ~$(round(mb_per_thread, digits=4)) MB")
+    println("  TOTAL Active Memory:  ~$(round(mb_active, digits=4)) MB")
+    println("------------------------------------------------")
+    
+    # --- Save Parameters ---
 
     p_funcs = propagators[propagator_choice]
 
@@ -44,7 +87,7 @@ function run_and_plot()
         print("... working on bead $N \n")
         
         # SINGLE THREADED EXECUTION to avoid stack/memory collisions with huge types
-        for i in eachindex(tau_values)
+        @threads for i in eachindex(tau_values)
             tau = tau_values[i]
             
             # Use ArbFloat explicitly for all conversions
@@ -107,5 +150,9 @@ function run_and_plot()
 end
 
 end # module
+
+
+
+
 
 QMC.run_and_plot()

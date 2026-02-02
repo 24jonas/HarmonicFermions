@@ -1,18 +1,10 @@
 {
-<<<<<<< Updated upstream
-    "bigfloat_precision": 27200,
-=======
-    "bigfloat_precision": 28000,
->>>>>>> Stashed changes
+    "bigfloat_precision": 27300,
     "run_id": "comp_thermo _N128 _D2 _PA",
     "mode": "thermo",
     "dimensions": 2,
     "propagator_choice": "PA",
     "bead_counts": [
-<<<<<<< Updated upstream
-=======
-        2,
->>>>>>> Stashed changes
         200
     ],
     "num_fermions": 128,
