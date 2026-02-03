@@ -90,13 +90,13 @@ function get_factor(mode::String)
     if mode == "thermo"
         return (lambda, gamma, w, lambda_s, gamma_s) -> begin
             factor_regular = lambda / gamma
-            factor_star = (w^2) * lambda_s / gamma_s
+            factor_star = (w) * lambda_s / gamma_s #No longer accounts for extra w from k1(e)
             return factor_regular, factor_star
         end
     else
         return (lambda, gamma, w, lambda_s, gamma_s) -> begin
             factor_regular = 0.5 * (gamma + 1 / gamma)
-            factor_star = (w / 2) * (gamma_s / w + w / gamma_s)
+            factor_star = (w / 2) * (gamma_s  + 1 / gamma_s) #No longer accounts for extra w from k1(e)
             return factor_regular, factor_star
         end
     end

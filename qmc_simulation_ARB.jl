@@ -103,7 +103,7 @@ function run_and_plot()
             # --- Effective case ---
             zeta_1_s = p_funcs.zeta_1(w*epsilon)
             lambda_val_s = p_funcs.lambda(w*epsilon) 
-            gamma_val_s = (sqrt(zeta_1_s^2-1))/p_funcs.k1(epsilon)
+            gamma_val_s = (sqrt(zeta_1_s^2-1))/p_funcs.k1(w*epsilon)
             
             u_s = (zeta_1_s >= 1) ? acosh(zeta_1_s) : ArbFloat(0)
             b_s = exp(-N * u_s)
