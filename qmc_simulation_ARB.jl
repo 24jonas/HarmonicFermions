@@ -77,8 +77,6 @@ function run_and_plot()
     factor_calc_H = get_factor("ham")
     energy_calc = get_energy_calc(balanced)
 
-    print("... plot set up \n")
-
     # --- Main Loop ---
     for N in bead_counts
         energies_T = Vector{Float64}(undef, length(tau_values))
@@ -147,6 +145,7 @@ function run_and_plot()
     output_filename_H = "data_$(run_id_H).csv"
     CSV.write(output_filename_T, results_df_T)
     CSV.write(output_filename_H, results_df_H)
+    print(results_df_H)
 end
 
 end # module
