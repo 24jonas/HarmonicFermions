@@ -9,7 +9,7 @@ tau_stop = 12.25 #! cost
 tau_values = range(tau_start, tau_stop, length=48) #! resolution (proportional cost)
 
 # --- High-Precision Settings ---
-bigfloat_precision = 6000 #! cost, determined by n, tau and to lesser extent N
+bigfloat_precision = 14000 #! cost, determined by n, tau and to lesser extent N
 setprecision(ArbFloat, bigfloat_precision)
 
 #Propagator choice: PA, TI, 4A is written as FA
