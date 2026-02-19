@@ -146,6 +146,7 @@ function run_and_plot()
     CSV.write(output_filename_T, results_df_T)
     CSV.write(output_filename_H, results_df_H)
     print(results_df_H)
+    print("----\n")
 end
 
 end # module
