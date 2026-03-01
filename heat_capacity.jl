@@ -7,7 +7,7 @@ using DataFrames
 
 function Get_heat_capacity()
     # --- Simulation Parameters ---
-    num_fermions = 32
+    num_fermions = 1024
     dimensions = 2
     propagator_choice = Symbol("PA")
 
@@ -22,42 +22,45 @@ function Get_heat_capacity()
     df_H = CSV.read(data_file_H, DataFrame)
 
     #--- Calculate Heat Capacity ---
-    # Create new DataFrames for the results, starting with the tau column
-    results_df_T = DataFrame(tau = df_T.tau)
-    results_df_H = DataFrame(tau = df_H.tau)
+    # Calculate the midpoints for the tau array (reduces size by exactly 1)
+    n_tau = length(df_T.tau)
+    midpoint_taus = [(df_T.tau[i] + df_T.tau[i+1]) / 2 for i in 1:(n_tau - 1)]
+    Temp = midpoint_taus .^ (-1) # Temperature is the inverse of tau
+
+    # Create new DataFrames using the midpoint tau column
+    results_df_T = DataFrame(tau = Temp)
+    results_df_H = DataFrame(tau = Temp)
 
     # Helper function to compute the discrete derivative 
     # C = -tau^2 * (dE / dtau)
     function compute_heat_capacity(tau_vals, E_vals)
         n = length(tau_vals)
-        C_v = zeros(n)
-        for i in 1:n
-            if i == 1
-                # Forward difference for the first element
-                dE_dtau = (E_vals[2] - E_vals[1]) / (tau_vals[2] - tau_vals[1])
-            elseif i == n
-                # Backward difference for the last element
-                dE_dtau = (E_vals[n] - E_vals[n-1]) / (tau_vals[n] - tau_vals[n-1])
-            else
-                # Central difference for interior points
-                dE_dtau = (E_vals[i+1] - E_vals[i-1]) / (tau_vals[i+1] - tau_vals[i-1])
-            end
-            C_v[i] = -(tau_vals[i]^2) * dE_dtau
+        C_v = zeros(n - 1) # Array is exactly 1 element shorter
+        
+        for i in 1:(n - 1)
+            # Pairwise difference (dE / dtau)
+            dE_dtau = (E_vals[i+1] - E_vals[i]) / (tau_vals[i+1] - tau_vals[i])
+            
+            # The corresponding tau is the midpoint
+            tau_mid = (tau_vals[i+1] + tau_vals[i]) / 2
+            
+            C_v[i] = -(tau_mid^2) * dE_dtau
         end
+        
         return C_v
     end
 
     # Apply the computation to all N_bead columns in the Thermodynamics dataframe
     for col in names(df_T)
         if col != "tau"
-            results_df_T[!, col] = compute_heat_capacity(df_T.tau, df_T[!, col])
+            results_df_T[!, col] = compute_heat_capacity(df_T.tau, df_T[!, col])/num_fermions
         end
     end
 
     # Apply the computation to all N_bead columns in the Hamiltonian dataframe
     for col in names(df_H)
         if col != "tau"
-            results_df_H[!, col] = compute_heat_capacity(df_H.tau, df_H[!, col])
+            results_df_H[!, col] = compute_heat_capacity(df_H.tau, df_H[!, col])/num_fermions
         end
     end
 

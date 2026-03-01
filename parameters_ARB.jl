@@ -1,12 +1,14 @@
 using ArbNumerics
 
 # --- Simulation Parameters ---
-num_fermions = 6 #! cost
-dimensions = 2
+num_fermions = 4 #! cost
+dimensions = 1
 bead_counts = [2, 4, 6, 8] #! cost
 tau_start = 0.25
-tau_stop = 20.25 #! cost
-tau_values = range(tau_start, tau_stop, length=100) #! resolution (proportional cost)
+tau_stop = 2.25 #! cost
+tau_values = range(tau_start, tau_stop, length=9) #! resolution (proportional cost)
+
+tau_beads = [round(Int, tau * 4) for tau in tau_values] # for variable N program
 
 # --- High-Precision Settings ---
 bigfloat_precision = 10000 #! cost, determined by n, tau and to lesser extent N
@@ -18,7 +20,7 @@ propagator_choice = Symbol("PA")
 # Now both thermo and hamiltonian estimators are calculated
 
 # Use ArbFloat explicitly to prevent type promotion errors later
-w = ArbFloat(0.5) 
+w = ArbFloat(1.0) 
 balanced = false
 
 run_id_T = "comp_thermo _N$num_fermions _D$dimensions _$propagator_choice"
