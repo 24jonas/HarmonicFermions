@@ -1,17 +1,17 @@
 using ArbNumerics
 
 # --- Simulation Parameters ---
-num_fermions = 4 #! cost
+num_fermions = 50 #! cost
 dimensions = 1
-bead_counts = [16] #! cost
-tau_start = 0.2
+bead_counts = [2, 20, 200] #! cost
+tau_start = 0.005
 tau_stop = 4.0 #! cost
-tau_values = range(tau_start, tau_stop, length=20) #! resolution (proportional cost)
+tau_values = range(tau_start, tau_stop, length=80) #! resolution (proportional cost)
 
 tau_beads = [round(Int, tau * 4) for tau in tau_values] # for variable N program
 
 # --- High-Precision Settings ---
-bigfloat_precision = 10000 #! cost, determined by n, tau and to lesser extent N
+bigfloat_precision = 30000 #! cost, determined by n, tau and to lesser extent N
 setprecision(ArbFloat, bigfloat_precision)
 
 #Propagator choice: PA, TI, 4A is written as FA

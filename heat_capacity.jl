@@ -7,7 +7,7 @@ using DataFrames
 
 function Get_heat_capacity()
     # --- Simulation Parameters ---
-    num_fermions = 4
+    num_fermions = 50
     dimensions = 1
     propagator_choice = Symbol("PA")
 
