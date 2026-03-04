@@ -7,8 +7,8 @@ using DataFrames
 
 function Get_heat_capacity()
     # --- Simulation Parameters ---
-    num_fermions = 1024
-    dimensions = 2
+    num_fermions = 4
+    dimensions = 1
     propagator_choice = Symbol("PA")
 
     run_id_T = "comp_thermo _N$num_fermions _D$dimensions _$propagator_choice"
@@ -28,8 +28,8 @@ function Get_heat_capacity()
     Temp = midpoint_taus .^ (-1) # Temperature is the inverse of tau
 
     # Create new DataFrames using the midpoint tau column
-    results_df_T = DataFrame(tau = Temp)
-    results_df_H = DataFrame(tau = Temp)
+    results_df_T = DataFrame(T = Temp)
+    results_df_H = DataFrame(T = Temp)
 
     # Helper function to compute the discrete derivative 
     # C = -tau^2 * (dE / dtau)

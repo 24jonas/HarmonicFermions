@@ -3,10 +3,10 @@ using ArbNumerics
 # --- Simulation Parameters ---
 num_fermions = 4 #! cost
 dimensions = 1
-bead_counts = [2, 4, 6, 8] #! cost
-tau_start = 0.25
-tau_stop = 2.25 #! cost
-tau_values = range(tau_start, tau_stop, length=9) #! resolution (proportional cost)
+bead_counts = [16] #! cost
+tau_start = 0.2
+tau_stop = 4.0 #! cost
+tau_values = range(tau_start, tau_stop, length=20) #! resolution (proportional cost)
 
 tau_beads = [round(Int, tau * 4) for tau in tau_values] # for variable N program
 
