@@ -8,13 +8,13 @@ set output 'TEST.png'
 set datafile separator ","
 
 # 3. Set plot titles and axis labels
-set title "PA propagator, n=20, d=1, N=4" offset 0.1,-0.8
+set title "PA propagator, n=10, d=1, N=[2,20,200]" offset 0.1,-0.8
 set xlabel "T"
 set ylabel "C"
 
 # 4. Set the axis ranges
 set xrange [0:10]
-set yrange [-5:1.5] 
+set yrange [-0.5:1.5] 
 #						          
 
 
@@ -48,10 +48,32 @@ C_Hn(x, n, N) = x**2 * ( \
 N = 5.0
 n = 10
 
+
+# 6. Define line styles with specific colors
+# --- Shades of Red (for ham_PA_N1D1.csv) ---
+set style line 3 lc rgb '#FF0000' # Red
+set style line 4 lc rgb '#DC143C' # Crimson
+set style line 5 lc rgb '#B22222' # Firebrick
+set style line 6 lc rgb '#8B0000' # DarkRed
+
+# --- Shades of Blue (for thermo_PA_N1D1.csv) ---
+set style line 8 lc rgb '#1E90FF' # DodgerBlue
+set style line 9 lc rgb '#4169E1' # RoyalBlue
+set style line 10 lc rgb '#0000FF' # Blue
+set style line 11 lc rgb '#0000CD' # MediumBlue
+set style line 12 lc rgb '#00008B' # DarkBlue
+
+set style line 13 lc rgb '#000000' # ?
+
 # --- 6. Plotting Rules ---
 # Use an even number of samples to avoid evaluating exactly at x=0
 set samples 1000
 
 # --- 7. The Plot Command ---
-plot C_Tn(1/x, n, N)/n title "C_{Tn}(x)" with lines linewidth 2, \
-     C_Hn(1/x, n, N)/n title "C_{Hn}(x)" with lines linewidth 2
+plot C_Tn(1/x, n, 2)/n title "C_{Tn}(x)" with lines ls 8, \
+     C_Tn(1/x, n, 20)/n title "C_{Tn}(x)" with lines ls 9, \
+     C_Tn(1/x, n, 200)/n title "C_{Tn}(x)" with lines ls 10, \
+     C_Hn(1/x, n, 2)/n title "C_{Hn}(x)" with lines ls 3, \
+     C_Hn(1/x, n, 20)/n title "C_{Hn}(x)" with lines ls 4, \
+     C_Hn(1/x, n, 200)/n title "C_{Hn}(x)" with lines ls 5, \
+     C_Hn(1/x, n, 2000)/n title "C_{Hn}(x)" with lines ls 13
