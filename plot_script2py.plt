@@ -24,7 +24,7 @@ set term qt size 800,600 font "Arial Black,11.5" linewidth 2# Use 'qt' or 'wxt' 
 # --- Plot 1: n vs time ---
 set title "Heat Capacity, PA, n=4, d=1, N=4*tau"
 set xlabel "T"
-set ylabel "C_V"
+set ylabel "(C_V)/n"
 set key top left Left reverse
 # Create a label string with the found parameters
 plot $Data using 1:2 with points pt 7 ps 1.5 title "Benchmark", \
