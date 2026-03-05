@@ -1,7 +1,7 @@
 using ArbNumerics
 
 # --- Simulation Parameters ---
-num_fermions = 50 #! cost
+num_fermions = 10 #! cost
 dimensions = 1
 bead_counts = [2, 20, 200] #! cost
 tau_start = 0.005
