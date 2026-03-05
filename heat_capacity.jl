@@ -7,8 +7,8 @@ using DataFrames
 
 function Get_heat_capacity()
     # --- Simulation Parameters ---
-    num_fermions = 50
-    dimensions = 1
+    num_fermions = 1024
+    dimensions = 2
     propagator_choice = Symbol("PA")
 
     run_id_T = "comp_thermo _N$num_fermions _D$dimensions _$propagator_choice"

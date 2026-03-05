@@ -8,12 +8,12 @@ set output 'TEST.png'
 set datafile separator ","
 
 # 3. Set plot titles and axis labels
-set title "PA propagator, n=4, d=1, N=8" offset 0.1,-0.8
+set title "PA propagator, n=1024, d=2, w=1/2, N=[2,4,8,16]" offset 0.1,-0.8
 set xlabel "T"
 set ylabel "C"
 
 # 4. Set the axis ranges
-set xrange [0:15]
+set xrange [0:2]
 set yrange [-0.5:1.5] 
 #						          
 
@@ -42,11 +42,11 @@ set style line 12 lc rgb '#00008B' # DarkBlue
 set style line 13 lc rgb '#000000' dt 2
 
 # 7. Plot the data (without title attributes)
-plot 'data_Cv_comp_ham _N50 _D1 _PA.csv' using 1:2 with lines ls 6, \
+plot 'data_Cv_comp_ham _N1024 _D2 _PA.csv' using 1:2 with lines ls 6, \
      ''                 using 1:3 with lines ls 5, \
      ''                 using 1:4 with lines ls 4, \
 	 ''					using 1:5 with lines ls 3, \
-     'data_Cv_comp_thermo _N50 _D1 _PA.csv' using 1:2 with lines ls 12, \
+     'data_Cv_comp_thermo _N1024 _D2 _PA.csv' using 1:2 with lines ls 12, \
      ''                   using 1:3 with lines ls 11, \
      ''                   using 1:4 with lines ls 10, \
 	 ''					  using 1:5 with lines ls 9, \
