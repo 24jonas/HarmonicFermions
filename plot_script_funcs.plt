@@ -1,8 +1,8 @@
 # --- Gnuplot Script ---
 
 # 1. Set the output file. This will create a PNG image.
-set terminal pngcairo enhanced font "Arial Black,14" size 640,480 linewidth 2
-set output 'TEST.png'
+set terminal postscript eps enhanced color font "Helvetica,14" linewidth 4
+set output 'TEST.eps'
 
 # 2. Tell gnuplot the data files are comma-separated (CSV)
 set datafile separator ","
@@ -13,9 +13,17 @@ set xlabel "T"
 set ylabel "C"
 
 # 4. Set the axis ranges
-set xrange [0:10]
+set xrange [0:2]
 set yrange [-0.5:1.5] 
 #						          
+
+# Labels for the Blue (T) curves
+set label "T2" at 1.0, 0.5 font "Helvetica,14" textcolor rgb '#0000FF'
+set label "T3" at 1.0, 0.8 font "Helvetica,14" textcolor rgb '#0000FF'
+
+# Labels for the Red (H) curves
+set label "H2" at 1.0, 0.3 font "Helvetica,14" textcolor rgb '#FF0000'
+set label "H3" at 1.0, 0.1 font "Helvetica,14" textcolor rgb '#FF0000'
 
 
 set grid
