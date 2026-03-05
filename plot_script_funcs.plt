@@ -10,10 +10,10 @@ set datafile separator ","
 # 3. Set plot titles and axis labels
 set title "PA propagator, n=10, d=1, N=[2,20,200]" offset 0.1,-0.8
 set xlabel "T"
-set ylabel "C"
+set ylabel "C/n"
 
 # 4. Set the axis ranges
-set xrange [0:10]
+set xrange [0:6]
 set yrange [-0.5:1.5] 
 #						          
 
