@@ -24,13 +24,13 @@ set grid
 unset key
 
 # Labels for the Blue (T) curves
-set label "T200" at 3.0, 50.3 font "Helvetica,16" textcolor rgb '#0000FF'
+set label "T200" at 3.2, 50.3 font "Helvetica,16" textcolor rgb '#0000FF'
 set label "T20" at 3, 49.5 font "Helvetica,16" textcolor rgb '#0000FF'
 set label "T2" at 1, 48 font "Helvetica,16" textcolor rgb '#0000FF'
 
 # Labels for the Red (H) curves
-set label "H200" at 3.7, 50.3 font "Helvetica,16" textcolor rgb '#FF0000'
-set label "H20" at 3.35, 50.3 font "Helvetica,16" textcolor rgb '#FF0000'
+# set label "H200" at 3.7, 50.3 font "Helvetica,16" textcolor rgb '#FF0000'
+set label "H20" at 3.6, 50.3 font "Helvetica,16" textcolor rgb '#FF0000'
 set label "H2" at 2, 51 font "Helvetica,16" textcolor rgb '#FF0000'
 
 
