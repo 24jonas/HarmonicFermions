@@ -61,23 +61,27 @@ set xtics 4000
 set xrange [10000:28000]
 set yrange [-1000:5000]
 
-set lmargin 1
-set rmargin 1
-set bmargin 2
-set tmargin 2
+#set lmargin 1
+#set rmargin 1
+#set bmargin 2
+#set tmargin 2
 
 
-set terminal postscript eps enhanced color font "Helvetica,20" linewidth 4
+set terminal postscript eps enhanced color font "Helvetica,26" linewidth 4 size 6,6
 set output 'BitScaling_E.eps'
 
 
 
 # --- Plot 2: n vs memory ---
+
+set encoding utf8
+
+
 set title "Error convergence for n=128"
-set xlabel "Simulated bits of precision"
-set ylabel "Log10 of Relative error for Z"
+set xlabel "B"
+set ylabel "Δ_Z"
 set key bottom left Left reverse
-eq2 = sprintf("g(x) = %.3e + %.3e * x", a2, b2)
+eq2 = sprintf("g(n) = %.3e + %.3e * n", a2, b2)
 plot $Data2 using 1:2 with points pt 7 ps 1.5 lc rgb "red" title "Benchmark", \
 	 g(x) with lines lw 2 lc rgb "blue" title eq2
 

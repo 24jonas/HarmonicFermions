@@ -1,7 +1,7 @@
 # --- Gnuplot Script ---
 
 # 1. Set the output file. This will create a PNG image.
-set terminal postscript eps enhanced color font "Helvetica,22" linewidth 4
+set terminal postscript eps enhanced color font "Helvetica,26" linewidth 4 size 6,6
 set output 'E_100_PA.eps'
 #set output 'TEST.eps'
 
