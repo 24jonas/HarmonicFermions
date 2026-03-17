@@ -1,28 +1,45 @@
 # --- Gnuplot Script ---
 
+
+$DataH << EOD
+1.00000, 967.45816, .12521
+1.50000, 956.38108, .07870
+2.00000, 956.03086, .10159
+2.50000, 960.82223, .12587
+3.00000, 970.72304, .17025
+3.50000, 984.98883, .21648
+EOD
+
+$DataT << EOD
+1.00000, 938.27481, .18625
+1.50000, 893.56622, .13478
+2.00000, 849.58184, .13141
+2.50000, 803.97907, .14226
+3.00000, 757.36442, .15833
+3.50000, 711.88985, .16724
+EOD
+
+
+
 # 1. Set the output file. This will create a PNG image.
 set terminal postscript eps enhanced color font "Helvetica,22" linewidth 4
-set output 'E_100_PA.eps'
-#set output 'TEST.eps'
+set output 'TEST.eps'
 
 # 2. Tell gnuplot the data files are comma-separated (CSV)
 set datafile separator ","
 
 # 3. Set plot titles and axis labels
 set title "PA propagator, n=100, d=2, N=[2,4,8,16]" offset 0.1,-0.8
-set xlabel "{/Symbol t}"
+set xlabel "tau"
 set ylabel "E"
 
 # 4. Set the axis ranges
-set xrange [0:15]
-set yrange [900:990] 
+set xrange [0:4]
+set yrange [700:1000] 
 #						          
 
-set size ratio 1
 
 set grid
-
-set ytics 20
 
 # 5. Remove the legend (key)
 unset key
@@ -68,6 +85,8 @@ plot 'data_comp_ham _N100 _D2 _PA.csv' using 1:2 with lines ls 6, \
      ''                   using 1:3 with lines ls 11, \
      ''                   using 1:4 with lines ls 10, \
 	 ''					  using 1:5 with lines ls 9, \
-     945 with lines ls 13  # <--- This creates the horizontal dashed line
+     945 with lines ls 13, \
+	 '$DataT' using 1:2:3 with yerrorbars pt 7 ps 1.5 lc rgb '#228B22', \
+     '$DataH' using 1:2:3 with yerrorbars pt 7 ps 1.5 lc rgb '#00FF00'
 
 # --- End of Script ---
