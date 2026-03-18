@@ -1,7 +1,7 @@
 # --- Gnuplot Script ---
 
 # 1. Set the output file. This will create a PNG image.
-set terminal postscript eps enhanced color font "Helvetica,22" linewidth 4
+set terminal postscript eps enhanced color font "Helvetica,28" linewidth 4 size 6,4.5
 set output 'C_analytical.eps'
 
 # 2. Tell gnuplot the data files are comma-separated (CSV)
@@ -13,22 +13,22 @@ set xlabel "T"
 set ylabel "C/n"
 
 # 4. Set the axis ranges
-set xrange [0:1.5]
-set yrange [-0.5:1.5] 
+set xrange [0:0.8]
+set yrange [-0.5:0.8] 
 #						          
 
 # Labels for the Blue (T) curves
-set label "T200" at 0.1, 0.15 font "Helvetica,16" textcolor rgb '#0000FF'
-set label "T20" at 0.25, 0.35 font "Helvetica,16" textcolor rgb '#0000FF'
-set label "T2" at 1, 0.7 font "Helvetica,16" textcolor rgb '#0000FF'
+set label "T200" at 0.1, 0.15 font "Helvetica,20" textcolor rgb '#0000FF'
+set label "T20" at 0.25, 0.35 font "Helvetica,20" textcolor rgb '#0000FF'
+set label "T2" at 1, 0.7 font "Helvetica,20" textcolor rgb '#0000FF'
 
 # Labels for the Red (H) curves
-set label "H200" at 0.03, -0.06 font "Helvetica,14" textcolor rgb '#FF0000'
-set label "H20" at 0.12, -0.3 font "Helvetica,16" textcolor rgb '#FF0000'
-set label "H2" at 0.82, 0.1 font "Helvetica,16" textcolor rgb '#FF0000'
+set label "H200" at 0.03, -0.06 font "Helvetica,20" textcolor rgb '#FF0000'
+set label "H20" at 0.12, -0.3 font "Helvetica,20" textcolor rgb '#FF0000'
+set label "H2" at 0.82, 0.1 font "Helvetica,20" textcolor rgb '#FF0000'
 
 # Label for reference
-set label "Exact" at 0.4, 0.0 font "Helvetica,16" textcolor rgb '#000000'
+set label "Exact" at 0.4, 0.0 font "Helvetica,20" textcolor rgb '#000000'
 
 set grid
 

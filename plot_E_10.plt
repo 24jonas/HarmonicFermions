@@ -1,15 +1,16 @@
 # --- Gnuplot Script ---
 
 # 1. Set the output file. This will create a PNG image.
-set terminal postscript eps enhanced color font "Helvetica,22" linewidth 4
+set terminal postscript eps enhanced color font "Helvetica,28" linewidth 4 size 6,4.5
 set output 'E_forC.eps'
 
 # 2. Tell gnuplot the data files are comma-separated (CSV)
 set datafile separator ","
 
 # 3. Set plot titles and axis labels
+set encoding utf8
 set title "PA propagator, n=10, d=1, N=[2,20,200]" offset 0.1,-0.8
-set xlabel "tau"
+set xlabel "{{/Symbol t}"
 set ylabel "E"
 
 # 4. Set the axis ranges
@@ -24,34 +25,34 @@ set grid
 unset key
 
 # Labels for the Blue (T) curves
-set label "T200" at 3.2, 50.3 font "Helvetica,16" textcolor rgb '#0000FF'
-set label "T20" at 3, 49.5 font "Helvetica,16" textcolor rgb '#0000FF'
-set label "T2" at 1, 48 font "Helvetica,16" textcolor rgb '#0000FF'
+set label "T200" at 3.2, 50.5 font "Helvetica,20" textcolor rgb '#0000FF'
+set label "T20" at 3, 49.2 font "Helvetica,20" textcolor rgb '#0000FF'
+set label "T2" at 1.12, 47.5 font "Helvetica,20" textcolor rgb '#0000FF'
 
 # Labels for the Red (H) curves
-# set label "H200" at 3.7, 50.3 font "Helvetica,16" textcolor rgb '#FF0000'
-set label "H20" at 3.6, 50.3 font "Helvetica,16" textcolor rgb '#FF0000'
-set label "H2" at 2, 51 font "Helvetica,16" textcolor rgb '#FF0000'
+# set label "H200" at 3.7, 50.8 font "Helvetica,20" textcolor rgb '#FF0000'
+set label "H20" at 3.6, 50.5 font "Helvetica,20" textcolor rgb '#FF0000'
+set label "H2" at 2.15, 51.5 font "Helvetica,20" textcolor rgb '#FF0000'
 
 
 
 # 6. Define line styles with specific colors
 # --- Shades of Red (for ham_PA_N1D1.csv) ---
-set style line 3 lc rgb '#FF0000' # Red
-set style line 4 lc rgb '#DC143C' # Crimson
-set style line 5 lc rgb '#B22222' # Firebrick
-set style line 6 lc rgb '#8B0000' # DarkRed
+set style line 3 lc rgb '#FF0000' lw 2# Red
+set style line 4 lc rgb '#FF0000' lw 2# Crimson
+set style line 5 lc rgb '#FF0000' lw 2# Firebrick
+set style line 6 lc rgb '#FF0000' lw 2# DarkRed
 
 # --- Shades of Blue (for thermo_PA_N1D1.csv) ---
-set style line 8 lc rgb '#1E90FF' # DodgerBlue
-set style line 9 lc rgb '#4169E1' # RoyalBlue
-set style line 10 lc rgb '#0000FF' # Blue
-set style line 11 lc rgb '#0000CD' # MediumBlue
-set style line 12 lc rgb '#00008B' # DarkBlue
+set style line 8 lc rgb '#0000FF' dt 5 lw 2# DodgerBlue
+set style line 9 lc rgb '#0000FF' dt 5 lw 2# RoyalBlue
+set style line 10 lc rgb '#0000FF' dt 5 lw 2# Blue
+set style line 11 lc rgb '#0000FF' dt 5 lw 2# MediumBlue
+set style line 12 lc rgb '#0000FF' dt 5 lw 2# DarkBlue
 
 # --- Dashed Black Line (for third file) ---
 # dt 2 specifies a dash pattern.
-set style line 13 lc rgb '#000000' dt 4
+set style line 13 lc rgb '#000000' dt 2 lw 2
 
 # 7. Plot the data (without title attributes)
 plot 'data_comp_ham _N10 _D1 _PA.csv' using 1:2 with lines ls 6, \
