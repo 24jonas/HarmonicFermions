@@ -48,12 +48,10 @@ g(x) = a2 + b2 * x
 a1 = 21.36459
 
 # Guessing quartic (c=4.5) for the second plot based on data shape
-a2 = 8056.6
+a2 = 8060
 b2 = -0.30103
 
 # 5. Plotting
-set size ratio 1
-
 set grid
 
 set ytics 1000
@@ -67,7 +65,7 @@ set yrange [-1000:5000]
 #set tmargin 2
 
 
-set terminal postscript eps enhanced color font "Helvetica,26" linewidth 4 size 6,6
+set terminal postscript eps enhanced color font "Helvetica,28" linewidth 4 size 6,4.5
 set output 'BitScaling_E.eps'
 
 
@@ -77,12 +75,12 @@ set output 'BitScaling_E.eps'
 set encoding utf8
 
 
-set title "Error convergence for n=128"
+set title "Δ_Z vs B for n=128"
 set xlabel "B"
 set ylabel "Δ_Z"
 set key bottom left Left reverse
-eq2 = sprintf("g(n) = %.3e + %.3e * n", a2, b2)
-plot $Data2 using 1:2 with points pt 7 ps 1.5 lc rgb "red" title "Benchmark", \
+eq2 = sprintf("g(n) = 8060 - 0.301 * n")
+plot $Data2 using 1:2 with points pt 7 ps 1.5 lc rgb "red" title "Computation", \
 	 g(x) with lines lw 2 lc rgb "blue" title eq2
 
 

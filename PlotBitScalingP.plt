@@ -27,7 +27,6 @@ a2 = 20.4027889319
 b2 = -1.06066017178
 
 # 5. Plotting
-set size ratio 1
 
 set grid
 
@@ -38,21 +37,21 @@ set ytics 20000
 #set bmargin 2
 #set tmargin 2
 
-set terminal postscript eps enhanced color font "Helvetica,26" linewidth 4 size 6,6
+set terminal postscript eps enhanced color font "Helvetica,26" linewidth 4 size 6,4.5
 set output 'BitScaling_P.eps'
 
 
 
 
 # --- Plot 1: n vs time ---
-set title "Bit Precision Need Scaling"
+set title "B vs n"
 set xlabel "n"
 set ylabel "B"
 set key top left Left reverse
 # Create a label string with the found parameters
 #eq1 = sprintf("f(x) =  %.2f * (x^{1.5} - x)" , a1)
-eq1 = sprintf("g(n) =  %.2f * (n^{1.5} + %.2f n)" , a2, b2)
-plot $Data using 1:2:3:4 with yerrorbars pt 7 ps 1.5 lw 5 title "Benchmark", \
+eq1 = sprintf("f(n) =  20.40 * (n^{1.5} - 1.061 n)")
+plot $Data using 1:2:3:4 with yerrorbars pt 7 ps 1.5 lw 5 title "Computation", \
 	 g(x) with lines lw 2 title eq1
 
 

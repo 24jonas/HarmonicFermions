@@ -14,18 +14,18 @@ set ylabel "C/n"
 
 # 4. Set the axis ranges
 set xrange [0:0.8]
-set yrange [-0.5:0.8] 
+set yrange [-0.4:0.8] 
 #						          
 
 # Labels for the Blue (T) curves
 set label "T200" at 0.1, 0.15 font "Helvetica,20" textcolor rgb '#0000FF'
 set label "T20" at 0.25, 0.35 font "Helvetica,20" textcolor rgb '#0000FF'
-set label "T2" at 1, 0.7 font "Helvetica,20" textcolor rgb '#0000FF'
+set label "T2" at 0.75, 0.7 font "Helvetica,20" textcolor rgb '#0000FF'
 
 # Labels for the Red (H) curves
 set label "H200" at 0.03, -0.06 font "Helvetica,20" textcolor rgb '#FF0000'
 set label "H20" at 0.12, -0.3 font "Helvetica,20" textcolor rgb '#FF0000'
-set label "H2" at 0.82, 0.1 font "Helvetica,20" textcolor rgb '#FF0000'
+set label "H2" at 0.75, 0.05 font "Helvetica,20" textcolor rgb '#FF0000'
 
 # Label for reference
 set label "Exact" at 0.4, 0.0 font "Helvetica,20" textcolor rgb '#000000'
@@ -63,17 +63,17 @@ n = 10
 
 # 6. Define line styles with specific colors
 # --- Shades of Red (for ham_PA_N1D1.csv) ---
-set style line 3 lc rgb '#FF0000' # Red
-set style line 4 lc rgb '#DC143C' # Crimson
-set style line 5 lc rgb '#B22222' # Firebrick
-set style line 6 lc rgb '#8B0000' # DarkRed
+set style line 3 lc rgb '#FF0000' lw 2# Red
+set style line 4 lc rgb '#FF0000' lw 2# Crimson
+set style line 5 lc rgb '#FF0000' lw 2# Firebrick
+set style line 6 lc rgb '#FF0000' lw 2# DarkRed
 
 # --- Shades of Blue (for thermo_PA_N1D1.csv) ---
-set style line 8 lc rgb '#1E90FF' # DodgerBlue
-set style line 9 lc rgb '#4169E1' # RoyalBlue
-set style line 10 lc rgb '#0000FF' # Blue
-set style line 11 lc rgb '#0000CD' # MediumBlue
-set style line 12 lc rgb '#00008B' # DarkBlue
+set style line 8 lc rgb '#0000FF' dt 5 lw 2# DodgerBlue
+set style line 9 lc rgb '#0000FF' dt 5 lw 2# RoyalBlue
+set style line 10 lc rgb '#0000FF' dt 5 lw 2# Blue
+set style line 11 lc rgb '#0000FF' dt 5 lw 2# MediumBlue
+set style line 12 lc rgb '#0000FF' dt 5 lw 2# DarkBlue
 
 set style line 13 lc rgb '#000000' # ?
 
