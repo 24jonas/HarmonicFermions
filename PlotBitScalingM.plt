@@ -40,7 +40,7 @@ set output 'BitScaling_M.eps'
 
 
 # --- Plot 2: n vs memory ---
-set title "Memory vs n"
+#set title "Memory vs n"
 set xlabel "n"
 set ylabel "Memory usage (MB)"
 set key top left Left reverse

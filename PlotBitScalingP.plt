@@ -44,9 +44,9 @@ set output 'BitScaling_P.eps'
 
 
 # --- Plot 1: n vs time ---
-set title "B vs n"
+#set title "B vs n"
 set xlabel "n"
-set ylabel "B"
+set ylabel "B_2"
 set key top left Left reverse
 # Create a label string with the found parameters
 #eq1 = sprintf("f(x) =  %.2f * (x^{1.5} - x)" , a1)

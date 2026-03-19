@@ -75,9 +75,9 @@ set output 'BitScaling_E.eps'
 set encoding utf8
 
 
-set title "Δ_Z vs B for n=128"
-set xlabel "B"
-set ylabel "Δ_Z"
+#set title "Δ_Z vs B for n=128"
+set xlabel "{/Symbol b}"
+set ylabel "Δ_Z^2"
 set key bottom left Left reverse
 eq2 = sprintf("g(n) = 8060 - 0.301 * n")
 plot $Data2 using 1:2 with points pt 7 ps 1.5 lc rgb "red" title "Computation", \

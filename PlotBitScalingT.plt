@@ -40,12 +40,12 @@ set output 'BitScaling_T.eps'
 
 
 # --- Plot 1: n vs time ---
-set title "Time vs n"
+#set title "Time vs n"
 set xlabel "n"
 set ylabel "Time (s)"
 set key top left Left reverse
 # Create a label string with the found parameters
 eq1 = sprintf("f(n) = %.3f + %.2e * n^4", a1, b1)
-plot $Data using 1:2 with points pt 7 ps 2 title "Benchmark", \
+plot $Data using 1:2 with points pt 7 ps 2 title "Computation", \
 	 f(x) with lines lw 2 title eq1
 
