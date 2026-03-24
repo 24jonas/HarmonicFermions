@@ -79,7 +79,7 @@ set encoding utf8
 set xlabel "{/Symbol b}"
 set ylabel "Δ_Z^2"
 set key bottom left Left reverse
-eq2 = sprintf("g(n) = 8060 - 0.301 * n")
+eq2 = sprintf("g({/Symbol b}) = 8060 - 0.301 * {/Symbol b}")
 plot $Data2 using 1:2 with points pt 7 ps 1.5 lc rgb "red" title "Computation", \
 	 g(x) with lines lw 2 lc rgb "blue" title eq2
 

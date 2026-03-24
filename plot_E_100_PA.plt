@@ -1,5 +1,24 @@
 # --- Gnuplot Script ---
 
+
+$DataH << EOD
+1.00000, 967.45816, .12521
+1.50000, 956.38108, .07870
+2.00000, 956.03086, .10159
+2.50000, 960.82223, .12587
+3.00000, 970.72304, .17025
+3.50000, 984.98883, .21648
+EOD
+
+$DataT << EOD
+1.00000, 938.27481, .18625
+1.50000, 893.56622, .13478
+2.00000, 849.58184, .13141
+2.50000, 803.97907, .14226
+3.00000, 757.36442, .15833
+3.50000, 711.88985, .16724
+EOD
+
 # 1. Set the output file. This will create a PNG image.
 set terminal postscript eps enhanced color font "Helvetica,28" linewidth 4 size 6,4.5
 set output 'E_100_PA.eps'
@@ -60,7 +79,9 @@ set style line 12 lc rgb '#0000FF' dt 5 lw 2# DarkBlue
 set style line 13 lc rgb '#000000' dt 2 lw 2
 
 # 7. Plot the data (without title attributes)
-plot 'data_comp_ham _N100 _D2 _PA.csv' using 1:2 with lines ls 6, \
+plot '$DataT' using 1:2:3 with yerrorbars pt 5 ps 2.5 lc rgb '#00FF00', \
+     '$DataH' using 1:2:3 with yerrorbars pt 7 ps 2.5 lc rgb '#00FF00', \
+	 'data_comp_ham _N100 _D2 _PA.csv' using 1:2 with lines ls 6, \
      ''                 using 1:3 with lines ls 5, \
      ''                 using 1:4 with lines ls 4, \
 	 ''					using 1:5 with lines ls 3, \
@@ -69,5 +90,6 @@ plot 'data_comp_ham _N100 _D2 _PA.csv' using 1:2 with lines ls 6, \
      ''                   using 1:4 with lines ls 10, \
 	 ''					  using 1:5 with lines ls 9, \
      945 with lines ls 13  # <--- This creates the horizontal dashed line
+	 
 
 # --- End of Script ---
