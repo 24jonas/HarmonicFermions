@@ -12,7 +12,7 @@ function degeneracy(m::Int, d::Int)
     return Int(binomial(BigInt(m + d - 1), BigInt(d - 1)))
 end
 
-function harmEnergy(num_fermions::Int, dimensions::Int, b::ArbFloat)
+function harmEnergy(num_fermions::Int, dimensions::Int, b::ArbFloat) ################# NEW GRAND Z APPROACH
     # Z[n+1] stores the coefficient for xi^n
     Z = [ArbFloat(0) for _ in 1:(num_fermions + 1)]
     Z_prime = [ArbFloat(0) for _ in 1:(num_fermions + 1)]
