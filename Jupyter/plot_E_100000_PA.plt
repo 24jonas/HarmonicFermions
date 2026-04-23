@@ -9,33 +9,33 @@ set datafile separator ","
 
 # 3. Set plot titles and axis labels
 set encoding utf8
-set title "PA propagator, n=100,000, d=2, N=[2,4,8,16], w=1/2" offset 0.1,-0.8
+set title "PA propagator, n=100,000, d=2, N=[2,4,8,16]" offset 0.1,-0.8
 set xlabel "{{/Symbol t}"
 set ylabel "E"
 
 # 4. Set the axis ranges
 set xrange [0:15]
-set yrange [14907152.5*0.95:14907152.5*1.05] 
+set yrange [29814304.0*0.95:29814304.0*1.05] 
 #						          
 
 
 set grid
-set ytics 0.04*10000000
+set ytics 0.06*10000000
 
 # 5. Remove the legend (key)
 unset key
 
 # Labels for the Blue (T) curves
-set label "T16" at 6.9, 15280 font "Helvetica,20" textcolor rgb '#0000FF'
-set label "T8" at 5.2, 15110 font "Helvetica,20" textcolor rgb '#0000FF'
-set label "T4" at 3.0, 15000 font "Helvetica,20" textcolor rgb '#0000FF'
-set label "T2" at 1.2, 14850 font "Helvetica,20" textcolor rgb '#0000FF'
+set label "T16" at 6.0, 935*31446 font "Helvetica,20" textcolor rgb '#0000FF'
+set label "T8" at 4.0, 925*31446 font "Helvetica,20" textcolor rgb '#0000FF'
+set label "T4" at 2.5, 915*31446 font "Helvetica,20" textcolor rgb '#0000FF'
+set label "T2" at 0.5, 905*31446 font "Helvetica,20" textcolor rgb '#0000FF'
 
 # Labels for the Red (H) curves
-set label "H16" at 13.0, 15390 font "Helvetica,20" textcolor rgb '#FF0000'
-set label "H8" at 11.0, 15550 font "Helvetica,20" textcolor rgb '#FF0000'
-set label "H4" at 8.2, 15650 font "Helvetica,20" textcolor rgb '#FF0000'
-set label "H2" at 4.5, 15750 font "Helvetica,20" textcolor rgb '#FF0000'
+set label "H16" at 11.0, 952*31600 font "Helvetica,20" textcolor rgb '#FF0000'
+set label "H8" at 6.3, 952*31600 font "Helvetica,20" textcolor rgb '#FF0000'
+set label "H4" at 3.1, 954*31600 font "Helvetica,20" textcolor rgb '#FF0000'
+set label "H2" at 2.2, 972*31600 font "Helvetica,20" textcolor rgb '#FF0000'
 
 
 
@@ -58,14 +58,14 @@ set style line 12 lc rgb '#0000FF' dt 5 lw 2# DarkBlue
 set style line 13 lc rgb '#000000' dt 2 lw 2
 
 # 7. Plot the data (without title attributes)
-plot 'plot_data_H_n100000.csv' using 1:2 with lines ls 6, \
+plot 'plot_data_H_n100000_w1.csv' using 1:2 with lines ls 6, \
      ''                 using 1:3 with lines ls 5, \
      ''                 using 1:4 with lines ls 4, \
 	 ''					using 1:5 with lines ls 3, \
-     'plot_data_T_n100000.csv' using 1:2 with lines ls 12, \
+     'plot_data_T_n100000_w1.csv' using 1:2 with lines ls 12, \
      ''                   using 1:3 with lines ls 11, \
      ''                   using 1:4 with lines ls 10, \
 	 ''					  using 1:5 with lines ls 9, \
-     14907152.5 with lines ls 13  # <--- This creates the horizontal dashed line
+     29814304.0 with lines ls 13  # <--- This creates the horizontal dashed line
 
 # --- End of Script ---
