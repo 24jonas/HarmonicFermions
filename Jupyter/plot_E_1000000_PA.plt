@@ -2,40 +2,43 @@
 
 # 1. Set the output file. This will create a PNG image.
 set terminal postscript eps enhanced color font "Helvetica,28" linewidth 4 size 6,4.5
-set output 'E_100000_PA.eps'
+set output 'E_1000000_PA.eps'
 
 # 2. Tell gnuplot the data files are comma-separated (CSV)
 set datafile separator ","
 
 # 3. Set plot titles and axis labels
 set encoding utf8
-set title "PA propagator, n=100,000, d=2, N=[2,4,8,16]" offset 0.1,-0.8
+set title "PA propagator, n=1,000,000, d=2, N=[2,4,8,16]" offset 0.1,-0.8
 set xlabel "{{/Symbol t}"
 set ylabel "E"
 
+Eexact = 942809245.0
+
 # 4. Set the axis ranges
 set xrange [0:15]
-set yrange [29814304.0*0.95:29814304.0*1.05] 
-#						          
+set yrange [Eexact*0.95:Eexact*1.05] 
+						          
 
 
 set grid
-set ytics 0.06*10000000
+set ytics Eexact*0.02
+set format y "%.3e"
 
 # 5. Remove the legend (key)
 unset key
 
 # Labels for the Blue (T) curves
-set label "T16" at 6.0, 935*31446 font "Helvetica,20" textcolor rgb '#0000FF'
-set label "T8" at 4.0, 925*31446 font "Helvetica,20" textcolor rgb '#0000FF'
-set label "T4" at 2.5, 915*31446 font "Helvetica,20" textcolor rgb '#0000FF'
-set label "T2" at 0.5, 905*31446 font "Helvetica,20" textcolor rgb '#0000FF'
+set label "T16" at 6.0, Eexact-0.7*Eexact*0.02 font "Helvetica,20" textcolor rgb '#0000FF'
+set label "T8" at 4.1, Eexact-1.5*Eexact*0.02 font "Helvetica,20" textcolor rgb '#0000FF'
+set label "T4" at 2.5, Eexact-2.0*Eexact*0.02 font "Helvetica,20" textcolor rgb '#0000FF'
+set label "T2" at 0.4, Eexact-2.3*Eexact*0.02 font "Helvetica,20" textcolor rgb '#0000FF'
 
 # Labels for the Red (H) curves
-set label "H16" at 11.0, 952*31600 font "Helvetica,20" textcolor rgb '#FF0000'
-set label "H8" at 6.3, 952*31600 font "Helvetica,20" textcolor rgb '#FF0000'
-set label "H4" at 3.1, 954*31600 font "Helvetica,20" textcolor rgb '#FF0000'
-set label "H2" at 2.2, 972*31600 font "Helvetica,20" textcolor rgb '#FF0000'
+set label "H16" at 11.0, Eexact+0.4*Eexact*0.02 font "Helvetica,20" textcolor rgb '#FF0000'
+set label "H8" at 6.3, Eexact+0.4*Eexact*0.02 font "Helvetica,20" textcolor rgb '#FF0000'
+set label "H4" at 3.1, Eexact+0.5*Eexact*0.02 font "Helvetica,20" textcolor rgb '#FF0000'
+set label "H2" at 2.2, Eexact+1.5*Eexact*0.02 font "Helvetica,20" textcolor rgb '#FF0000'
 
 
 
@@ -58,14 +61,14 @@ set style line 12 lc rgb '#0000FF' dt 5 lw 2# DarkBlue
 set style line 13 lc rgb '#000000' dt 2 lw 2
 
 # 7. Plot the data (without title attributes)
-plot 'plot_data_H_n100000_w1.csv' using 1:2 with lines ls 6, \
+plot 'plot_data_H_n1000000_w1_0.csv' using 1:2 with lines ls 6, \
      ''                 using 1:3 with lines ls 5, \
      ''                 using 1:4 with lines ls 4, \
 	 ''					using 1:5 with lines ls 3, \
-     'plot_data_T_n100000_w1.csv' using 1:2 with lines ls 12, \
+     'plot_data_T_n1000000_w1_0.csv' using 1:2 with lines ls 12, \
      ''                   using 1:3 with lines ls 11, \
      ''                   using 1:4 with lines ls 10, \
 	 ''					  using 1:5 with lines ls 9, \
-     29814304.0 with lines ls 13  # <--- This creates the horizontal dashed line
+     Eexact with lines ls 13  # <--- This creates the horizontal dashed line
 
 # --- End of Script ---

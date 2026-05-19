@@ -3,3 +3,8 @@
 Jupyter/recursions.db
 *.db
 *.db
+Jupyter/Million noninteracting run/plot_data_H_all_n_tail.npy
+*.npy
+*.db
+*.db
+Jupyter/recursions.db
