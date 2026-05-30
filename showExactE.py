@@ -32,4 +32,4 @@ def energy(n, w, verbose=False):
 
 
 
-print(energy(1_000_000, 1.0))
+print(energy(1000, 0.1))
