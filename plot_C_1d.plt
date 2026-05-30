@@ -62,7 +62,7 @@ C_HnA(tau) = -tau**2 * dE_HnA_dtau(tau) / n
 
 # Common styling and grid
 set xlabel "T" font "Helvetica,20"
-set ylabel "Energy / 2n   &   Heat Capacity / n" font "Helvetica,20"
+set ylabel "Heat Capacity / n   &   2 * Energy / n^2" font "Helvetica,20"
 set grid linetype 1 linecolor rgb "#cccccc" linewidth 1
 set samples 1000
 
@@ -75,8 +75,8 @@ T_max = 2.0
 
 set yrange [0:1.5]
 # Added font sizing to tics to make the grid numbers larger
-set xtics 0.25 font "Helvetica,18"
-set ytics 0.25 font "Helvetica,18" 
+#set xtics 0.25 font "Helvetica,18"
+#set ytics 0.25 font "Helvetica,18"
 
 # ----------------------------------------------------
 # Custom Labels (Adjust coordinates as needed)
@@ -95,9 +95,9 @@ set label "C_H" at 0.6, 0.25 font "Helvetica,20" textcolor rgb "blue"
 # Overlay Plot Command
 # ----------------------------------------------------
 plot [T=T_min:T_max] \
-     E_n(1.0/T) / (2.0*n)     title "Exact E"   with lines lw 3 lc rgb "black", \
-     E_TnA(1.0/T) / (2.0*n)   title "E_T"       with lines lw 3 dt 2 lc rgb "red", \
-     E_HnA(1.0/T) / (2.0*n)   title "E_H"       with lines lw 3 dt 3 lc rgb "blue", \
+     E_n(1.0/T) / (0.5*n**2)     title "Exact E"   with lines lw 3 lc rgb "black", \
+     E_TnA(1.0/T) / (0.5*n**2)   title "E_T"       with lines lw 3 dt 2 lc rgb "red", \
+     E_HnA(1.0/T) / (0.5*n**2)   title "E_H"       with lines lw 3 dt 3 lc rgb "blue", \
      C_n_exact(1.0/T) / n     title "Exact C"   with lines lw 3 lc rgb "black", \
      C_TnA(1.0/T)             title "C_T"       with lines lw 3 dt 2 lc rgb "red", \
      C_HnA(1.0/T)             title "C_H"       with lines lw 3 dt 3 lc rgb "blue"
