@@ -80,8 +80,9 @@ T_max = 15.0
 set output "energies_multi_N_highn.eps"
 set ylabel "Energy" font "Helvetica,20"
 set yrange [5000*0.999:5000*1.001]
+set ytics 2
 
-set label "C_{exact}"    at 14, 4999.5 font "Helvetica,16" textcolor rgb "black"
+set label "E_{continuum}"    at 13.2, 4999.5 font "Helvetica,16" textcolor rgb "black"
 set label "T^{PA}"      at 2, 4997.5 font "Helvetica,16" textcolor rgb "blue"
 set label "H^{PA}"      at 5, 5002.5 font "Helvetica,16" textcolor rgb "red"
 set label "T^{4A}" at 7, 4998.5 font "Helvetica,16" textcolor rgb "#BEA9DF"
@@ -109,10 +110,10 @@ set output "heat_capacities_multi_N_highn.eps"
 set ylabel "Heat Capacity / n" font "Helvetica,20"
 set yrange [-0.5:1.5]
 set xlabel "T"
-
+set ytics auto
 
 unset label
-set label "C_{exact}"    at 1.8, -0.03 font "Helvetica,16" textcolor rgb "black"
+set label "C_{continuum}"    at 1.7, -0.03 font "Helvetica,16" textcolor rgb "black"
 set label "T^{PA}"      at 0.85, 0.75 font "Helvetica,16" textcolor rgb "blue"
 set label "H^{PA}"      at 0.38, -0.2 font "Helvetica,16" textcolor rgb "red"
 set label "T^{4A}" at 0.38, 0.30 font "Helvetica,16" textcolor rgb "#BEA9DF"

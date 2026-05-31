@@ -81,7 +81,7 @@ set output "energies_multi_N_lown.eps"
 set ylabel "Energy" font "Helvetica,20"
 set yrange [1250*0.999:1250*1.001]
 
-set label "C_{exact}"    at 14, 1249.8 font "Helvetica,16" textcolor rgb "black"
+set label "E_{continuum}"    at 13.1, 1249.9 font "Helvetica,16" textcolor rgb "black"
 set label "T^{PA}"      at 2, 1249.3 font "Helvetica,16" textcolor rgb "blue"
 set label "H^{PA}"      at 5, 1250.6 font "Helvetica,16" textcolor rgb "red"
 set label "T^{4A}" at 7, 1249.6 font "Helvetica,16" textcolor rgb "#BEA9DF"
@@ -112,7 +112,7 @@ set xlabel "T"
 
 
 unset label
-set label "C_{exact}"    at 1.8, 0.03 font "Helvetica,16" textcolor rgb "black"
+set label "C_{continuum}"    at 1.7, 0.03 font "Helvetica,16" textcolor rgb "black"
 set label "T^{PA}"      at 0.85, 0.75 font "Helvetica,16" textcolor rgb "blue"
 set label "H^{PA}"      at 0.45, -0.2 font "Helvetica,16" textcolor rgb "red"
 set label "T^{4A}" at 0.3, 0.30 font "Helvetica,16" textcolor rgb "#BEA9DF"
