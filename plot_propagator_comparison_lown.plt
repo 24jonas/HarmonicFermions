@@ -84,8 +84,8 @@ set yrange [1250*0.999:1250*1.001]
 set label "E_{continuum}"    at 13.1, 1249.9 font "Helvetica,18" textcolor rgb "black"
 set label "T^{PA}"      at 2, 1249.3 font "Helvetica,18" textcolor rgb "blue"
 set label "H^{PA}"      at 5, 1250.6 font "Helvetica,18" textcolor rgb "red"
-set label "T^{4A}" at 7, 1249.6 font "Helvetica,18" textcolor rgb "#BEA9DF"
-set label "H^{4A}" at 13, 1250.2 font "Helvetica,18" textcolor rgb "#FFB668"
+set label "T^{4A}" at 7, 1249.6 font "Helvetica,18" textcolor rgb "#9D00FF"
+set label "H^{4A}" at 13, 1250.2 font "Helvetica,18" textcolor rgb "#FF6E0D"
 
 plot [T=T_min:T_max] \
      E_TnA(T, 4)            with lines lw 2  lc rgb "blue", \
@@ -94,12 +94,12 @@ plot [T=T_min:T_max] \
      E_HnA(T, 4)            with lines lw 2  lc rgb "red", \
      E_HnA(T, 8)            with lines lw 2  lc rgb "red", \
      E_HnA(T, 16)          with lines lw 2  lc rgb "red", \
-     E_TnA_4A(T, 4)         with lines lw 2  lc rgb "#BEA9DF", \
-     E_TnA_4A(T, 8)         with lines lw 2  lc rgb "#BEA9DF", \
-     E_TnA_4A(T, 16)       with lines lw 2  lc rgb "#BEA9DF", \
-     E_HnA_4A(T, 4)         with lines lw 2  lc rgb "#FFB668", \
-     E_HnA_4A(T, 8)         with lines lw 2  lc rgb "#FFB668", \
-     E_HnA_4A(T, 16)       with lines lw 2  lc rgb "#FFB668", \
+     E_TnA_4A(T, 4)         with lines lw 2  lc rgb "#9D00FF", \
+     E_TnA_4A(T, 8)         with lines lw 2  lc rgb "#9D00FF", \
+     E_TnA_4A(T, 16)       with lines lw 2  lc rgb "#9D00FF", \
+     E_HnA_4A(T, 4)         with lines lw 2  lc rgb "#FF6E0D", \
+     E_HnA_4A(T, 8)         with lines lw 2  lc rgb "#FF6E0D", \
+     E_HnA_4A(T, 16)       with lines lw 2  lc rgb "#FF6E0D", \
      E_n(T, 32)           with lines lw 2 dt 2 lc rgb "black"
 
 # ----------------------------------------------------
@@ -115,8 +115,8 @@ unset label
 set label "C_{continuum}"    at 1.7, 0.03 font "Helvetica,18" textcolor rgb "black"
 set label "T^{PA}"      at 0.85, 0.75 font "Helvetica,18" textcolor rgb "blue"
 set label "H^{PA}"      at 0.45, -0.2 font "Helvetica,18" textcolor rgb "red"
-set label "T^{4A}" at 0.3, 0.30 font "Helvetica,18" textcolor rgb "#BEA9DF"
-set label "H^{4A}" at 0.01, 0.05 font "Helvetica,18" textcolor rgb "#FFB668"
+set label "T^{4A}" at 0.3, 0.30 font "Helvetica,18" textcolor rgb "#9D00FF"
+set label "H^{4A}" at 0.01, 0.05 font "Helvetica,18" textcolor rgb "#FF6E0D"
 
 plot [T=T_min:2] \
      C_TnA(1.0/T, 4)                with lines lw 2  lc rgb "blue", \
@@ -125,10 +125,10 @@ plot [T=T_min:2] \
      C_HnA(1.0/T, 4)                 with lines lw 2  lc rgb "red", \
      C_HnA(1.0/T, 8)                 with lines lw 2  lc rgb "red", \
      C_HnA(1.0/T, 16)               with lines lw 2  lc rgb "red", \
-     C_TnA_4A(1.0/T, 4)            with lines lw 2  lc rgb "#BEA9DF", \
-     C_TnA_4A(1.0/T, 8)             with lines lw 2  lc rgb "#BEA9DF", \
-     C_TnA_4A(1.0/T, 16)            with lines lw 2  lc rgb "#BEA9DF", \
-     C_HnA_4A(1.0/T, 4)              with lines lw 2  lc rgb "#FFB668", \
-     C_HnA_4A(1.0/T, 8)              with lines lw 2  lc rgb "#FFB668", \
-     C_HnA_4A(1.0/T, 16)            with lines lw 2  lc rgb "#FFB668", \
+     C_TnA_4A(1.0/T, 4)            with lines lw 2  lc rgb "#9D00FF", \
+     C_TnA_4A(1.0/T, 8)             with lines lw 2  lc rgb "#9D00FF", \
+     C_TnA_4A(1.0/T, 16)            with lines lw 2  lc rgb "#9D00FF", \
+     C_HnA_4A(1.0/T, 4)              with lines lw 2  lc rgb "#FF6E0D", \
+     C_HnA_4A(1.0/T, 8)              with lines lw 2  lc rgb "#FF6E0D", \
+     C_HnA_4A(1.0/T, 16)            with lines lw 2  lc rgb "#FF6E0D", \
      C_n_exact(1.0/T) / n         with lines lw 2 dt 2 lc rgb "black"
