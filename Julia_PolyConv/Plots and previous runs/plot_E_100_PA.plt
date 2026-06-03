@@ -29,7 +29,7 @@ set datafile separator ","
 
 # 3. Set plot titles and axis labels
 set encoding utf8
-set title "PA propagator, n=100, d=2, N=[2,4,8,16]" offset 0.1,-0.8
+set title "n=100, d=2, N=[2,4,8,16]" offset 0.1,-0.8
 set xlabel "{{/Symbol t}"
 set ylabel "E"
 

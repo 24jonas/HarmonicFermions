@@ -9,9 +9,9 @@ set datafile separator ","
 
 # 3. Set plot titles and axis labels
 set encoding utf8
-set title "PA propagator, n=10,000, d=2, N=[2,4,8,16], {/Symbol w}=0.5" offset 0.1,-0.8
+set title "n=10,000, d=2, N=[2,4,8,16], {/Symbol w}=0.5" offset 0.1,-0.8
 set xlabel "{{/Symbol t}"
-set ylabel "E· 10^5"
+set ylabel "E / 10^5"
 
 Eexact = 471410.5
 scale = 0.0008
