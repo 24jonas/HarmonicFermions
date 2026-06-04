@@ -79,9 +79,7 @@ set style line 12 lc rgb '#0000FF' dt 5 lw 2# DarkBlue
 set style line 13 lc rgb '#000000' dt 2 lw 2
 
 # 7. Plot the data (without title attributes)
-plot '$DataT' using 1:2:3 with yerrorbars pt 5 ps 2.5 lc rgb '#228B22', \
-     '$DataH' using 1:2:3 with yerrorbars pt 7 ps 2.5 lc rgb '#228B22', \
-	 'data_comp_ham _N100 _D2 _PA_og.csv' using 1:2 with lines ls 6, \
+plot 'data_comp_ham _N100 _D2 _PA_og.csv' using 1:2 with lines ls 6, \
      ''                 using 1:3 with lines ls 5, \
      ''                 using 1:4 with lines ls 4, \
 	 ''					using 1:5 with lines ls 3, \
@@ -89,6 +87,8 @@ plot '$DataT' using 1:2:3 with yerrorbars pt 5 ps 2.5 lc rgb '#228B22', \
      ''                   using 1:3 with lines ls 11, \
      ''                   using 1:4 with lines ls 10, \
 	 ''					  using 1:5 with lines ls 9, \
+	 '$DataT' using 1:2:3 with yerrorbars pt 5 ps 2.5 lc rgb '#00DD00', \
+     '$DataH' using 1:2:3 with yerrorbars pt 7 ps 2.5 lc rgb '#00DD00', \
      945 with lines ls 13  # <--- This creates the horizontal dashed line
 	 
 

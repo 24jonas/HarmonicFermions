@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: BitScaling_T.eps
-%%Creator: gnuplot 6.0 patchlevel 3
-%%CreationDate: Wed Mar 18 22:00:22 2026
+%%Creator: gnuplot 6.0.3 patchlevel 3
+%%CreationDate: Wed Jun  3 18:59:36 2026
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 482 374
 %%EndComments
@@ -430,18 +430,19 @@ dup length dict begin {1 index /FID eq {pop pop} {def} ifelse} forall
 currentdict end definefont pop
 %
 %
-% Encoding for Windows-1252 (Western European)
+% Base ISO8859-1 character encoding plus support macros for UTF-8 encoding
+% via the glyphshow operator
 %
-/reencodeCP1252 {
+/reencodeISO {
 dup dup findfont dup length dict begin
 { 1 index /FID ne { def }{ pop pop } ifelse } forall
 currentdict /CharStrings known {
 	CharStrings /Idieresis known {
-		/Encoding CP1252Encoding def } if
+		/Encoding ISOLatin1Encoding def } if
 } if
 currentdict end definefont
 } def
-/CP1252Encoding [
+/ISOLatin1Encoding [
 /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
 /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
 /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
@@ -453,11 +454,11 @@ currentdict end definefont
 /O/P/Q/R/S/T/U/V/W/X/Y/Z/bracketleft/backslash/bracketright
 /asciicircum/underscore/quoteleft/a/b/c/d/e/f/g/h/i/j/k/l/m
 /n/o/p/q/r/s/t/u/v/w/x/y/z/braceleft/bar/braceright/asciitilde
-/.notdef/Euro/.notdef/quotesinglbase/florin/quotedblbase/ellipsis/dagger
-/daggerdbl/circumflex/perthousand/Scaron/guilsinglleft/OE/.notdef/Zcaron
-/.notdef/.notdef/quoteleft/quoteright/quotedblleft/quotedblright
-/bullet/endash/emdash/tilde/trademark/scaron/guilsinglright/oe/.notdef
-/zcaron/Ydieresis/space/exclamdown/cent/sterling/currency/yen/brokenbar
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/dotlessi/grave/acute/circumflex/tilde/macron/breve
+/dotaccent/dieresis/.notdef/ring/cedilla/.notdef/hungarumlaut
+/ogonek/caron/space/exclamdown/cent/sterling/currency/yen/brokenbar
 /section/dieresis/copyright/ordfeminine/guillemotleft/logicalnot
 /hyphen/registered/macron/degree/plusminus/twosuperior/threesuperior
 /acute/mu/paragraph/periodcentered/cedilla/onesuperior/ordmasculine
@@ -472,6 +473,20 @@ currentdict end definefont
 /otilde/odieresis/divide/oslash/ugrave/uacute/ucircumflex/udieresis
 /yacute/thorn/ydieresis
 ] def
+
+/Gshow { dup type /stringtype eq { show } { glyphshow } ifelse } def
+
+/Gsall { {Gshow} forall } def
+/Gwidth {
+	dup currentpoint pop exch
+	gsave 6 array currentmatrix nulldevice setmatrix Gsall currentpoint pop grestore sub
+	} def
+/GLshow {currentpoint stroke M 0 vshift R 
+	Blacktext {gsave 0 setgray Gsall grestore} {Gsall} ifelse} def
+/GRshow {currentpoint stroke M dup Gwidth vshift R
+	Blacktext {gsave 0 setgray Gsall grestore} {Gsall} ifelse} def
+/GCshow {currentpoint stroke M dup Gwidth 2 div vshift R 
+	Blacktext {gsave 0 setgray Gsall grestore} {Gsall} ifelse} def
 /Metrics {ExtendTextBox Gswidth} def
 /Lwidth {currentpoint stroke M 0 vshift R Metrics} def
 /Rwidth {currentpoint stroke M dup stringwidth pop neg vshift R Metrics} def
@@ -512,7 +527,7 @@ currentdict end definefont
   Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
 /XYsave    { [( ) 1 2 true false 3 ()] } bind def
 /XYrestore { [( ) 1 2 true false 4 ()] } bind def
-/Helvetica reencodeCP1252 def
+/Helvetica reencodeISO def
 Level1 SuppressPDFMark or 
 {} {
 /SDict 10 dict def
@@ -522,10 +537,10 @@ systemdict /pdfmark known not {
 SDict begin [
   /Title (BitScaling_T.eps)
   /Subject (gnuplot plot)
-  /Creator (gnuplot 6.0 patchlevel 3)
+  /Creator (gnuplot 6.0.3 patchlevel 3)
 %  /Producer (gnuplot)
 %  /Keywords ()
-  /CreationDate (Wed Mar 18 22:00:22 2026)
+  /CreationDate (Wed Jun  3 18:59:36 2026)
   /DOCINFO pdfmark
 end
 } ifelse
@@ -770,9 +785,7 @@ LCb setrgbcolor
 LTa
 LCa setrgbcolor
 5165 896 M
-0 4680 V
-0 560 R
-0 63 V
+0 5303 V
 stroke
 1.000 UL
 LTb
@@ -793,9 +806,7 @@ LCb setrgbcolor
 LTa
 LCa setrgbcolor
 6155 896 M
-0 4680 V
-0 560 R
-0 63 V
+0 5303 V
 stroke
 1.000 UL
 LTb
@@ -816,9 +827,7 @@ LCb setrgbcolor
 LTa
 LCa setrgbcolor
 7145 896 M
-0 4680 V
-0 560 R
-0 63 V
+0 5303 V
 stroke
 1.000 UL
 LTb
@@ -902,8 +911,9 @@ LTb
 0.00 0.62 0.45 C
 LCb setrgbcolor
 2443 5716 M
-[ [(Helvetica) 280.0 0.0 true true 0 (f\(n\) = 0.182 + 6.18e-09 * n)]
+[ [(Helvetica) 280.0 0.0 true true 0 (O\(n)]
 [(Helvetica) 224.0 140.0 true true 0 (4)]
+[(Helvetica) 280.0 0.0 true true 0 (\) fit)]
 ] -121.3 MLshow
 /Helvetica findfont 280 scalefont setfont
 2.000 UL
@@ -1027,7 +1037,7 @@ Z stroke
 LCb setrgbcolor
 266 3547 M
 currentpoint gsave translate -270 rotate 0 0 moveto
-[ [(Helvetica) 280.0 0.0 true true 0 (Time \(s\))]
+[ [(Helvetica) 280.0 0.0 true true 0 (t \(s\))]
 ] -93.3 MCshow
 grestore
 /Helvetica findfont 280 scalefont setfont

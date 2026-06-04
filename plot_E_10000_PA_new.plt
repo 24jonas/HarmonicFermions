@@ -31,7 +31,7 @@ unset key
 
 # Labels for the Blue (T) curves
 set label "T16" at 2.4, Eexact-0.4*Eexact*scale font "Helvetica,20" textcolor rgb '#0000FF'
-set label "T8" at 2.1, Eexact-1.6*Eexact*scale font "Helvetica,20" textcolor rgb '#0000FF'
+set label "T8" at 2.01, Eexact-1.4*Eexact*scale font "Helvetica,20" textcolor rgb '#0000FF'
 set label "T4" at 1.2, Eexact-1.8*Eexact*scale font "Helvetica,20" textcolor rgb '#0000FF'
 set label "T2" at 0.2, Eexact-2.3*Eexact*scale font "Helvetica,20" textcolor rgb '#0000FF'
 
