@@ -30,7 +30,7 @@ set tmargin at screen TM
 set bmargin at screen MB
 
 set title "PA propagator, n=300, d=2, T=0.01" offset 0,-0.5
-set ylabel "Chemical potential" offset 1.5,0
+set ylabel "{/Symbol m}" offset 1.5,0
 
 # Hide X-axis labels and numbers for the top plot so they don't overlap the bottom plot
 unset xlabel

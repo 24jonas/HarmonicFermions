@@ -17,13 +17,10 @@ EOD
 
 # 2. Define the Functions
 # f(x) for Column 1 vs 2
-f(x) = a1 * (x**1.5 - x)
-g(x) = a2 * (x**1.5 + b2 * x)
+g(x) = a2 * (x**1.5 + b2 * x)*15
 
 # 3. Initialize Parameters (Crucial for power laws)
-a1 = 21.36459
-
-a2 = 20.4027889319
+a2 = 1.3601859288
 b2 = -1.06066017178
 
 # 5. Plotting
@@ -50,7 +47,7 @@ set ylabel "B_2"
 set key top left Left reverse
 # Create a label string with the found parameters
 #eq1 = sprintf("f(x) =  %.2f * (x^{1.5} - x)" , a1)
-eq1 = sprintf("f(n) =  20.40 * (n^{1.5} - 1.061 n)")
+eq1 = sprintf("B_2(n,15)")
 plot $Data using 1:2:3:4 with yerrorbars pt 7 ps 1.5 lw 5 title "Computation", \
 	 g(x) with lines lw 2 title eq1
 

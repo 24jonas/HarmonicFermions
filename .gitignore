@@ -1,10 +1,18 @@
+# Database files
+*.db
 
-*.db
-Jupyter/recursions.db
-*.db
-*.db
-Jupyter/Million noninteracting run/plot_data_H_all_n_tail.npy
+# NumPy binary files
 *.npy
-*.db
-*.db
-Jupyter/recursions.db
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Virtual environment
+.venv/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# LibreOffice lock files
+.~lock.*
