@@ -1,2 +1,18 @@
+# Database files
+*.db
 
-recursions.db
+# NumPy binary files
+*.npy
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Virtual environment
+.venv/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# LibreOffice lock files
+.~lock.*
