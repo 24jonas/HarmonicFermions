@@ -1,0 +1,159 @@
+        - module EnergySol
+        - using ArbNumerics
+        - 
+        - export harmEnergy, get_factor, get_energy_calc
+        - 
+        - # --- Optimized Core Logic ---
+        - 
+        - function precompute_z_and_derivs(max_n::Int, d::Int, b::ArbFloat)
+        -     # Pre-allocate arrays. 
+        -     # z_vals[i] stores z_i
+        -     # z_prime_vals[i] stores z'_i
+    11701     z_vals = Vector{ArbFloat}(undef, max_n)
+     8414     z_prime_vals = Vector{ArbFloat}(undef, max_n)
+        - 
+        -     # We can compute b^i iteratively to avoid expensive pow(b, i) calls
+        -     # b_pow starts at b^1
+        -     b_pow = b 
+        -     
+     7815     for i in 1:max_n
+        -         # 1. Compute z_i and z'_i
+        -         # Formula: z_i = b^(i*d/2) / (1 - b^i)^d
+        -         
+     5344         one_minus_b_i = 1 - b_pow
+        -         
+        -         # Calculate z term
+        -         # optimization: b^(i*d/2) is (b_pow)^(d/2). 
+        -         # If d is even (d=2), this is just b_pow.
+    37240         if d == 2
+        -             numerator = b_pow
+        -         else
+        0             numerator = b_pow^(d/2) # General case
+        -         end
+        -         
+     4544         z = numerator / (one_minus_b_i^d)
+        -         
+        -         # Calculate derivative term
+        -         # (log(z))' = (i*d)/(2*b) + (d*i*b^(i-1))/(1-b^i)
+        -         # Note: We need b^(i-1). We can get this from b_pow / b.
+     4128         b_pow_minus_1 = (i == 1) ? one(ArbFloat) : (b_pow / b)
+        -         
+    56520         log_deriv = (ArbFloat(i * d) / (2 * b)) + (d * i * b_pow_minus_1) / one_minus_b_i
+     3600         z_prime = z * log_deriv
+        - 
+     6576         z_vals[i] = z
+     3008         z_prime_vals[i] = z_prime
+        - 
+        -         # Update b^i for the next iteration (b^(i+1) = b^i * b)
+     1376         if i < max_n
+     2224             b_pow *= b
+        -         end
+     5936     end
+        -     
+      208     return z_vals, z_prime_vals
+        - end
+        - 
+        - function Z_recursive_optimized!(n::Int, z_vals::Vector{ArbFloat}, z_prime_vals::Vector{ArbFloat}, cache_Z::Vector{ArbFloat}, cache_Z_prime::Vector{ArbFloat})
+        -     # Check cache (0.0 is used as sentinel since Z != 0 usually, or use a separate flag)
+        -     # Better: check if we have computed it. We fill sequentially, so we can just check if n is in done list? 
+        -     # Actually, the recursive nature means we might skip around if we implemented it top-down, 
+        -     # but memoization fills from bottom up usually.
+        -     # For safety with NaN checks, we assume undefined spots are NaN.
+        -     
+ 22550528     if !isnan(cache_Z[n])
+ 45467904         return cache_Z[n], cache_Z_prime[n]
+        -     end
+        - 
+    37928     total_Z = zero(ArbFloat)
+     2208     total_Z_prime = zero(ArbFloat)
+        - 
+        -     # The loop sum_{i=1}^n
+  3949872     for i in 1:n
+ 13668432         z_i = z_vals[i]
+ 13807232         z_i_prime = z_prime_vals[i]
+        - 
+        -         # Get Z_{n-i}
+  3179496         if n - i == 0
+     2768             Z_ni = one(ArbFloat)
+    38344             Z_ni_prime = zero(ArbFloat)
+        -         else
+  6950680             Z_ni, Z_ni_prime = Z_recursive_optimized!(n - i, z_vals, z_prime_vals, cache_Z, cache_Z_prime)
+        -         end
+        - 
+  6636488         sign = iseven(i - 1) ? 1 : -1
+        - 
+        -         # Newton-Girard terms
+ 14776552         total_Z += sign * z_i * Z_ni
+ 21846136         total_Z_prime += sign * (z_i_prime * Z_ni + z_i * Z_ni_prime)
+  7971296     end
+        - 
+   115016     final_Z = total_Z / n
+     3152     final_Z_prime = total_Z_prime / n
+        -     
+    41216     cache_Z[n] = final_Z
+     4816     cache_Z_prime[n] = final_Z_prime
+        -     
+   151664     return final_Z, final_Z_prime
+        - end
+        - 
+        - function harmEnergy(num_fermions::Int, dimensions::Int, b::ArbFloat, cache::Any)
+        -     # Note: 'cache' argument is kept for compatibility but we create a fresh efficient one internally
+        -     # or you can pass a scratch space. For thread safety in the main loop, 
+        -     # it is safer to allocate here since N=400 is small enough for a Vector.
+        - 
+    13756     if !(0 < b < 1)
+        0         return ArbFloat(NaN)
+        -     end
+        - 
+        -     # 1. Precompute z_i terms (This is O(N) instead of O(N^2) pow calls)
+      944     z_vals, z_prime_vals = precompute_z_and_derivs(num_fermions, dimensions, b)
+        - 
+        -     # 2. Setup Vector Cache (O(1) access vs O(log N) dict)
+        -     # We use NaN to indicate "uncomputed"
+    21393     cache_Z = Vector{ArbFloat}(undef, num_fermions)
+    19889     cache_Z_prime = Vector{ArbFloat}(undef, num_fermions)
+   168887     fill!(cache_Z, ArbFloat(NaN)) 
+        - 
+        -     # 3. Run Recursion
+      752     Z_val, Z_prime = Z_recursive_optimized!(
+        -         num_fermions, z_vals, z_prime_vals, cache_Z, cache_Z_prime
+        -     )
+        - 
+        -     # 4. Calculate Energy
+      704     if isnan(Z_prime) || Z_val <= 0
+        0         return NaN
+        -     else
+     1168         log_Z_prime = Z_prime / Z_val
+     7536         return Float64(b * log_Z_prime)
+        -     end
+        - end
+        - 
+        - # --- Helpers (Unchanged) ---
+        - 
+        - function get_factor(mode::String)
+        -     if mode == "thermo"
+        -         return (lambda, gamma, w, lambda_s, gamma_s) -> begin
+        0             factor_regular = lambda / gamma
+        -             factor_star = (w^2) * lambda_s / gamma_s
+        -             return factor_regular, factor_star
+        -         end
+        -     else
+        -         return (lambda, gamma, w, lambda_s, gamma_s) -> begin
+        -             factor_regular = 0.5 * (gamma + 1 / gamma)
+        -             factor_star = (w / 2) * (gamma_s / w + w / gamma_s)
+        -             return factor_regular, factor_star
+        -         end
+        -     end
+        - end
+        - 
+        - function get_energy_calc(balanced::Bool)
+        -     if balanced
+        -         return (num_fermions, dimensions, b_s, c) -> 
+        -             harmEnergy(floor(Int, num_fermions / 2), dimensions, b_s, c) + harmEnergy(ceil(Int, num_fermions / 2), dimensions, b_s, c)
+        -     else
+       16         return (num_fermions, dimensions, b_s, c) -> 
+        -             harmEnergy(num_fermions, dimensions, b_s, c)
+        -     end
+        - end
+        - 
+        - end
