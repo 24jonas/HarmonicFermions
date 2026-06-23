@@ -13,10 +13,10 @@ see polyconv_opt.py.
 
 import math
 
-
 # ============================================================
 # Log-space arithmetic utilities
 # ============================================================
+
 
 def logaddexp(a, b):
     """Numerically stable log(exp(a) + exp(b))."""
@@ -33,6 +33,7 @@ def logaddexp(a, b):
 # ============================================================
 # Degeneracy functions
 # ============================================================
+
 
 def degeneracy_box(d, k):
     """
@@ -66,6 +67,7 @@ def log_binom(n, k):
 # ============================================================
 # Core convolution
 # ============================================================
+
 
 def convolve_shell_logspace(logZ, g, logw, n):
     """
@@ -108,12 +110,20 @@ def convolve_shell_logspace(logZ, g, logw, n):
 # Main API
 # ============================================================
 
+
 def fermion_logZ_numeric(
-    tau, N, n, d=None,
-    max_shell=None, tol=1e-4, consecutive_small=8,
+    tau,
+    N,
+    n,
+    d=None,
+    max_shell=None,
+    tol=1e-4,
+    consecutive_small=8,
     safety_cap=100000,
     return_all=False,
-    gk_fn=None, Ek_fn=None, logwk_fn=None,
+    gk_fn=None,
+    Ek_fn=None,
+    logwk_fn=None,
     k_start=0,
 ):
     """
@@ -183,12 +193,24 @@ def fermion_logZ_numeric(
 
     # Defaults
     if gk_fn is None:
-        gk_fn = lambda k: degeneracy_box(d, k)
+
+        def default_gk_fn(k):
+            return degeneracy_box(d, k)
+
+        gk_fn = default_gk_fn
 
     if logwk_fn is None:
         if Ek_fn is None:
-            Ek_fn = lambda k: k
-        logwk_fn = lambda k, logb: Ek_fn(k) * logb
+
+            def default_Ek_fn(k):
+                return k
+
+            Ek_fn = default_Ek_fn
+
+        def default_logwk_fn(k, logb):
+            return Ek_fn(k) * logb
+
+        logwk_fn = default_logwk_fn
 
     # logZ[m] = log coefficient of t^m in running polynomial
     logZ = [-math.inf] * (n + 1)

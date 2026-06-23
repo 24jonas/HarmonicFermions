@@ -5,7 +5,8 @@ Contains helper functions for constructing tau grids, computing finite
 differences, heat capacities, and producing logZ / energy plots.
 """
 
-import math
+
+
 import numpy as np
 
 
@@ -51,9 +52,18 @@ def compute_heat_capacity(tau_vals, E_vals):
     return Cv
 
 
-def plot_logZ_and_fd_multiN(tau_start, tau_end, tau_step, n, d, N_list,
-                            show_logZ=True, show_fd=True,
-                            logZ_func=None, **logZ_kwargs):
+def plot_logZ_and_fd_multiN(
+    tau_start,
+    tau_end,
+    tau_step,
+    n,
+    d,
+    N_list,
+    show_logZ=True,
+    show_fd=True,
+    logZ_func=None,
+    **logZ_kwargs,
+):
     """Plot log Z_n and/or its finite difference across multiple bead counts N."""
     import matplotlib.pyplot as plt
 

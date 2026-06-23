@@ -10,42 +10,45 @@ References:
 """
 
 import math
-import numpy as np
-import numba
 import sqlite3
 import time
 
+import numba
+import numpy as np
 
 # ============================================================
 # Database persistence (checkpoint / resume long computations)
 # ============================================================
 
-def init_db(db_name='recursions.db'):
+
+def init_db(db_name="recursions.db"):
     """Create the SQLite tables for checkpointing if they don't exist."""
     try:
         conn = sqlite3.connect(db_name, timeout=60.0)
         c = conn.cursor()
-        c.execute('''CREATE TABLE IF NOT EXISTS log_Q_states
+        c.execute("""CREATE TABLE IF NOT EXISTS log_Q_states
                      (n INTEGER, b REAL, m_start INTEGER, L_prev BLOB, L BLOB, log_poch REAL,
-                     PRIMARY KEY (n, b))''')
-        c.execute('''CREATE TABLE IF NOT EXISTS log_Q_all_states
+                     PRIMARY KEY (n, b))""")
+        c.execute("""CREATE TABLE IF NOT EXISTS log_Q_all_states
                      (n INTEGER, b REAL, m_start INTEGER, L_prev BLOB, L BLOB, res BLOB, log_poch REAL,
-                     PRIMARY KEY (n, b))''')
+                     PRIMARY KEY (n, b))""")
         conn.commit()
         conn.close()
     except Exception:
         pass
 
 
-def save_log_Q_state(n, b, m_start, L_prev, L, log_poch, db_name='recursions.db'):
+def save_log_Q_state(n, b, m_start, L_prev, L, log_poch, db_name="recursions.db"):
     """Save a single-n computation checkpoint."""
     for _ in range(5):
         try:
             conn = sqlite3.connect(db_name, timeout=60.0)
             c = conn.cursor()
-            c.execute('''INSERT OR REPLACE INTO log_Q_states (n, b, m_start, L_prev, L, log_poch)
-                         VALUES (?, ?, ?, ?, ?, ?)''',
-                      (n, b, m_start, L_prev.tobytes(), L.tobytes(), log_poch))
+            c.execute(
+                """INSERT OR REPLACE INTO log_Q_states (n, b, m_start, L_prev, L, log_poch)
+                         VALUES (?, ?, ?, ?, ?, ?)""",
+                (n, b, m_start, L_prev.tobytes(), L.tobytes(), log_poch),
+            )
             conn.commit()
             conn.close()
             break
@@ -53,13 +56,16 @@ def save_log_Q_state(n, b, m_start, L_prev, L, log_poch, db_name='recursions.db'
             time.sleep(2)
 
 
-def load_log_Q_state(n, b, db_name='recursions.db'):
+def load_log_Q_state(n, b, db_name="recursions.db"):
     """Load a single-n computation checkpoint, or return None."""
     for _ in range(5):
         try:
             conn = sqlite3.connect(db_name, timeout=60.0)
             c = conn.cursor()
-            c.execute('''SELECT m_start, L_prev, L, log_poch FROM log_Q_states WHERE b=? AND m_start <= ? ORDER BY m_start DESC LIMIT 1''', (b, n + 2))
+            c.execute(
+                """SELECT m_start, L_prev, L, log_poch FROM log_Q_states WHERE b=? AND m_start <= ? ORDER BY m_start DESC LIMIT 1""",
+                (b, n + 2),
+            )
             row = c.fetchone()
             conn.close()
             if row is None:
@@ -70,23 +76,27 @@ def load_log_Q_state(n, b, db_name='recursions.db'):
             log_poch = row[3]
             L_prev = np.zeros(n + 2, dtype=np.float64)
             L = np.zeros(n + 2, dtype=np.float64)
-            L_prev[:len(L_prev_old)] = L_prev_old
-            L[:len(L_old)] = L_old
+            L_prev[: len(L_prev_old)] = L_prev_old
+            L[: len(L_old)] = L_old
             return m_start, L_prev, L, log_poch
         except sqlite3.OperationalError:
             time.sleep(2)
     return None
 
 
-def save_log_Q_all_state(n, b, m_start, L_prev, L, res, log_poch, db_name='recursions.db'):
+def save_log_Q_all_state(
+    n, b, m_start, L_prev, L, res, log_poch, db_name="recursions.db"
+):
     """Save an all-n computation checkpoint."""
     for _ in range(5):
         try:
             conn = sqlite3.connect(db_name, timeout=60.0)
             c = conn.cursor()
-            c.execute('''INSERT OR REPLACE INTO log_Q_all_states (n, b, m_start, L_prev, L, res, log_poch)
-                         VALUES (?, ?, ?, ?, ?, ?, ?)''',
-                      (n, b, m_start, L_prev.tobytes(), L.tobytes(), res.tobytes(), log_poch))
+            c.execute(
+                """INSERT OR REPLACE INTO log_Q_all_states (n, b, m_start, L_prev, L, res, log_poch)
+                         VALUES (?, ?, ?, ?, ?, ?, ?)""",
+                (n, b, m_start, L_prev.tobytes(), L.tobytes(), res.tobytes(), log_poch),
+            )
             conn.commit()
             conn.close()
             break
@@ -94,13 +104,16 @@ def save_log_Q_all_state(n, b, m_start, L_prev, L, res, log_poch, db_name='recur
             time.sleep(2)
 
 
-def load_log_Q_all_state(n, b, db_name='recursions.db'):
+def load_log_Q_all_state(n, b, db_name="recursions.db"):
     """Load an all-n computation checkpoint, or return None."""
     for _ in range(5):
         try:
             conn = sqlite3.connect(db_name, timeout=60.0)
             c = conn.cursor()
-            c.execute('''SELECT m_start, L_prev, L, res, log_poch FROM log_Q_all_states WHERE b=? AND m_start <= ? ORDER BY m_start DESC LIMIT 1''', (b, n + 2))
+            c.execute(
+                """SELECT m_start, L_prev, L, res, log_poch FROM log_Q_all_states WHERE b=? AND m_start <= ? ORDER BY m_start DESC LIMIT 1""",
+                (b, n + 2),
+            )
             row = c.fetchone()
             conn.close()
             if row is None:
@@ -113,9 +126,9 @@ def load_log_Q_all_state(n, b, db_name='recursions.db'):
             L_prev = np.zeros(n + 2, dtype=np.float64)
             L = np.zeros(n + 2, dtype=np.float64)
             res = np.zeros(n + 1, dtype=np.float64)
-            L_prev[:len(L_prev_old)] = L_prev_old
-            L[:len(L_old)] = L_old
-            res[:len(res_old)] = res_old
+            L_prev[: len(L_prev_old)] = L_prev_old
+            L[: len(L_old)] = L_old
+            res[: len(res_old)] = res_old
             return m_start, L_prev, L, res, log_poch
         except sqlite3.OperationalError:
             time.sleep(2)
@@ -125,6 +138,7 @@ def load_log_Q_all_state(n, b, db_name='recursions.db'):
 # ============================================================
 # Numba-JIT computational kernels
 # ============================================================
+
 
 @numba.njit
 def logsumexp2(x, y):
@@ -153,7 +167,7 @@ def log1mexp_neg(x):
 def _log_Q_chunk(m_start, m_end, logb, L_prev, L):
     """Process a chunk of the recursion for single-n log_Q."""
     for m in range(m_start, m_end):
-        L[m - 1] = logsumexp_array(L_prev[:m - 1])
+        L[m - 1] = logsumexp_array(L_prev[: m - 1])
         log1mbpow = log1mexp_neg((m - 1) * logb)
         for i in range(m - 1, 0, -1):
             t1 = logb + L[i]
@@ -178,7 +192,7 @@ def _compute_log_poch(n, logb):
 def _log_Q_all_chunk(m_start, m_end, logb, L_prev, L, res, log_poch):
     """Process a chunk of the recursion, storing results for all n."""
     for m in range(m_start, m_end):
-        L[m - 1] = logsumexp_array(L_prev[:m - 1])
+        L[m - 1] = logsumexp_array(L_prev[: m - 1])
         log1mbpow = log1mexp_neg((m - 1) * logb)
         for i in range(m - 1, 0, -1):
             t1 = logb + L[i]
@@ -198,7 +212,8 @@ def _log_Q_all_chunk(m_start, m_end, logb, L_prev, L, res, log_poch):
 # Main API
 # ============================================================
 
-def log_Q(n, b, db_name='recursions.db'):
+
+def log_Q(n, b, db_name="recursions.db"):
     """
     Compute log Q_n(b) — the log partition function for n fermions.
 
@@ -241,7 +256,7 @@ def log_Q(n, b, db_name='recursions.db'):
     return (n * (n + 1) // 2) * logb - 2.0 * log_poch + logH
 
 
-def log_Q_all(n, b, db_name='recursions.db'):
+def log_Q_all(n, b, db_name="recursions.db"):
     """
     Compute log Q_k(b) for all k = 0, 1, ..., n.
 
@@ -276,7 +291,9 @@ def log_Q_all(n, b, db_name='recursions.db'):
     chunk_size = 50000
     while m_start < n + 2:
         m_end = min(m_start + chunk_size, n + 2)
-        L_prev, L, res, log_poch = _log_Q_all_chunk(m_start, m_end, logb, L_prev, L, res, log_poch)
+        L_prev, L, res, log_poch = _log_Q_all_chunk(
+            m_start, m_end, logb, L_prev, L, res, log_poch
+        )
         m_start = m_end
         save_log_Q_all_state(n, b, m_start, L_prev, L, res, log_poch, db_name)
 

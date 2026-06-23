@@ -6,15 +6,16 @@ Thomas-Fermi (semiclassical) approximation for thermodynamic quantities,
 and shell-filling utilities.
 """
 
-import math
+
+
 import numpy as np
 from scipy.integrate import quad
 from scipy.optimize import root_scalar
 
-
 # ============================================================
 # Exact Ground-State Energies
 # ============================================================
+
 
 def energy_2d(n, w, verbose=False):
     """
@@ -144,6 +145,7 @@ def highest_occupied_shell(n, d=2):
 # Thomas-Fermi (Semiclassical) Approximation
 # ============================================================
 
+
 def N_int(mu, T, w=1.0):
     """
     Thomas-Fermi particle number: integral of the Fermi-Dirac density of
@@ -163,11 +165,13 @@ def N_int(mu, T, w=1.0):
     float
         Particle number N(mu, T).
     """
+
     def integrand(e):
         x = (e - mu) / T
         if x > 100:
             return 0.0
         return (e / w**2) / (np.exp(x) + 1.0)
+
     return quad(integrand, 0, max(0, mu) + 40 * T)[0]
 
 
@@ -190,11 +194,13 @@ def E_int(mu, T, w=1.0):
     float
         Total energy E(mu, T).
     """
+
     def integrand(e):
         x = (e - mu) / T
         if x > 100:
             return 0.0
         return (e**2 / w**2) / (np.exp(x) + 1.0)
+
     return quad(integrand, 0, max(0, mu) + 40 * T)[0]
 
 
@@ -217,9 +223,11 @@ def get_mu_TF(n_target, T_fixed, w=1.0):
         Chemical potential mu.
     """
     mu0 = np.sqrt(2 * n_target) * w
+
     def obj(mu):
         return N_int(mu, T_fixed, w) - n_target
-    res = root_scalar(obj, bracket=[-20 * T_fixed, mu0 + 20 * T_fixed], method='brentq')
+
+    res = root_scalar(obj, bracket=[-20 * T_fixed, mu0 + 20 * T_fixed], method="brentq")
     return res.root
 
 

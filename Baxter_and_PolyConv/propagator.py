@@ -10,10 +10,10 @@ Used by both the Baxter method and PolyConv method notebooks.
 
 import math
 
-
 # ============================================================
 # PA Propagator Functions
 # ============================================================
+
 
 def p_funcs_zeta_1(e):
     """First PA propagator function: zeta_1(epsilon) = 1 + epsilon^2 / 2."""
@@ -39,6 +39,7 @@ def p_funcs_k1(e):
 # Factor Calculations
 # ============================================================
 
+
 def factor_calc_T(lambda_val, gamma_val, w, lambda_val_s, gamma_val_s):
     """
     Compute the thermodynamic estimator correction factors.
@@ -51,6 +52,13 @@ def factor_calc_T(lambda_val, gamma_val, w, lambda_val_s, gamma_val_s):
     return (lambda_val / gamma_val), (w * lambda_val_s / gamma_val_s)
 
 
+def factor_calc_T_star(w, lambda_val_s, gamma_val_s):
+    """
+    Compute the starred thermodynamic estimator correction factor.
+    """
+    return w * lambda_val_s / gamma_val_s
+
+
 def factor_calc_H(lambda_val, gamma_val, w, lambda_val_s, gamma_val_s):
     """
     Compute the Hamiltonian estimator correction factors.
@@ -60,12 +68,22 @@ def factor_calc_H(lambda_val, gamma_val, w, lambda_val_s, gamma_val_s):
     tuple of (fH_reg, fH_star)
         Regular and starred Hamiltonian factors.
     """
-    return 0.5 * (gamma_val + 1.0 / gamma_val), (w / 2.0) * (gamma_val_s + 1.0 / gamma_val_s)
+    return 0.5 * (gamma_val + 1.0 / gamma_val), (w / 2.0) * (
+        gamma_val_s + 1.0 / gamma_val_s
+    )
+
+
+def factor_calc_H_star(w, lambda_val_s, gamma_val_s):
+    """
+    Compute the starred Hamiltonian estimator correction factor.
+    """
+    return (w / 2.0) * (gamma_val_s + 1.0 / gamma_val_s)
 
 
 # ============================================================
 # Boltzmann factor from (tau, N, w)
 # ============================================================
+
 
 def get_b_val(tau_val, N_val, w_val):
     """
