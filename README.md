@@ -10,7 +10,7 @@ This repository implements three methods for computing the canonical partition f
 
 2. **Baxter Method** (Python) — A combinatorial recursion based on Baxter's $q$-series identity, specialized for 2D harmonic oscillators. Computes $\log Q_n(b)$ where $b = e^{-\beta\omega}$ is the Boltzmann factor.
 
-3. **Polynomial Convolution (PolyConv)** — Convolves per-shell generating functions $(1 + w_k t)^{g_k}$ in log-space to compute $\log Z_n$. Works for arbitrary dimensions and arbitrary single-particle potentials (not restricted to harmonic traps). Available in both Python (with Numba acceleration) and Julia (with `ArbNumerics` precision).
+3. **Polynomial Convolution (PolyConv)** — Convolves per-shell generating functions $(1 + w_k t)^{g_k}$ in log-space to compute $\log Z_n$. Works for arbitrary dimensions and arbitrary single-particle potentials (not restricted to harmonic traps). Available in both Python (with Numba acceleration) and Julia (with `ArbNumerics` precision). *In development
 
 All three methods compute **exact** partition functions (up to floating-point or arbitrary precision) and are designed for use in **Path Integral Monte Carlo (PIMC)** simulations, where the ratio of fermionic to bosonic partition functions determines the sign of permutation weights.
 
