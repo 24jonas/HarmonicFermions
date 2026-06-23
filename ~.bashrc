@@ -1,1 +1,0 @@
-export JULIA_PKG_SERVER=""
